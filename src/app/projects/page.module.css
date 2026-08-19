@@ -1,0 +1,250 @@
+.main {
+  background: #fff;
+}
+
+.container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.hero {
+  padding: 28px 0 22px;
+  min-height: calc(100svh - 74px);
+  overflow: hidden;
+}
+
+.heroInner {
+  min-height: calc(100svh - 74px - 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroTitle {
+  font-family: var(--font-hero);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: 0;
+  font-size: clamp(44px, 4.8vw, 74px);
+  color: var(--black);
+  text-align: center;
+}
+
+.heroAccent {
+  position: relative;
+  display: inline-block;
+  color: var(--black);
+  font-style: normal;
+  z-index: 0;
+}
+
+.heroAccent::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: 6px;
+  height: 18px;
+  background: var(--pink);
+  z-index: -1;
+  border-radius: 2px;
+}
+
+.heroDesc {
+  margin: 18px auto 0;
+  max-width: 760px;
+  font-size: 20px;
+  line-height: 1.45;
+  color: #222;
+  text-align: center;
+}
+
+.actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--black);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 14px 22px;
+  border-radius: 999px;
+  line-height: 1;
+  transition: background 0.2s;
+}
+
+.btnPrimary:hover {
+  background: #333;
+}
+
+.btnArrowCircle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.btnPrimary:hover .btnArrowCircle,
+.btnPrimary:active .btnArrowCircle {
+  transform: translate(4px, 4px);
+}
+
+.btnPrimary:hover .btnArrowCircle svg,
+.btnPrimary:active .btnArrowCircle svg {
+  transform: rotate(18deg);
+}
+
+.btnArrowCircle svg {
+  transition: transform 0.2s;
+}
+
+.btnOutline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--black);
+  color: var(--black);
+  background: transparent;
+  line-height: 1;
+  transition: background 0.2s;
+}
+
+.btnOutline:hover {
+  background: #f5f5f5;
+}
+
+.previewSection {
+  padding: 46px 0 58px;
+  background: #fff;
+}
+
+.previewTitle {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0 0 26px;
+  color: var(--black);
+}
+
+.previewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 22px;
+}
+
+.previewCard {
+  border-radius: 26px;
+}
+
+.cardPink {
+  grid-column: 1;
+  grid-row: 1;
+  min-height: 178px;
+  background: #f8cbe0;
+}
+
+.cardGreen {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 126px;
+  background: #bff5d7;
+}
+
+.cardBlue {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 326px;
+  background: #b3d7ff;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: 20px 0 14px;
+    min-height: calc(100svh - 70px);
+  }
+
+  .heroInner {
+    min-height: calc(100svh - 70px - 34px);
+  }
+
+  .heroTitle {
+    font-size: clamp(36px, 10vw, 54px);
+  }
+
+  .heroAccent::after {
+    left: -4px;
+    right: -4px;
+    bottom: 5px;
+    height: 14px;
+  }
+
+  .actions {
+    width: 100%;
+    gap: 10px;
+    padding: 0 var(--page-gutter);
+    box-sizing: border-box;
+  }
+
+  .btnPrimary,
+  .btnOutline {
+    width: 50%;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .heroDesc {
+    font-size: 16px;
+    line-height: 1.45;
+    max-width: 620px;
+  }
+
+  .previewTitle {
+    font-size: 28px;
+  }
+
+  .previewGrid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+  }
+
+  .cardPink {
+    min-height: 136px;
+  }
+
+  .cardGreen {
+    min-height: 96px;
+  }
+
+  .cardBlue {
+    min-height: 244px;
+  }
+}
+

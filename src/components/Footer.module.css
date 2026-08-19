@@ -1,0 +1,187 @@
+.footer {
+  background: #131313;
+  color: #fff;
+  padding: 58px 0 0;
+}
+
+.container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+  display: grid;
+  grid-template-columns: minmax(280px, 1.6fr) repeat(3, minmax(140px, 1fr));
+  gap: 34px;
+}
+
+.logoWrap {
+  display: flex;
+  margin-bottom: 14px;
+}
+
+.brandDesc {
+  font-size: 16px;
+  line-height: 1.55;
+  color: #fff;
+  margin-bottom: 22px;
+  max-width: 360px;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+}
+
+.social {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.social:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.colHead {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 6px;
+}
+
+.colLink {
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.colLink:hover { color: #fff; }
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Згрупувати мобільний футер по рядках:
+     1) бренд на всю ширину
+     2) напрями/організація в 2 колонки
+     3) контакти на всю ширину */
+  .container > :nth-child(1) {
+    grid-column: 1 / -1;
+  }
+
+  .container > :nth-child(2) {
+    grid-column: 1 / 2;
+  }
+
+  .container > :nth-child(3) {
+    grid-column: 2 / 3;
+  }
+
+  .container > :nth-child(4) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding-top: 44px;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .brandDesc {
+    max-width: none;
+  }
+}
+
+.bottomLine {
+  margin-top: 34px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.bottomInner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 14px var(--page-gutter) 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.copy {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+}
+
+.legal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.legalLink {
+  font-size: 14px;
+  color: rgba(255,255,255,0.58);
+  transition: color 0.2s;
+}
+
+.legalLink:hover {
+  color: #fff;
+}
+
+.telebotsPill {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 999px;
+  padding: 8px 12px;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.telebotsPill:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.telebotsBrand {
+  color: #fff;
+  font-weight: 700;
+}
+
+@media (max-width: 680px) {
+  .bottomInner {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+    text-align: center;
+  }
+
+  .legal {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+}
