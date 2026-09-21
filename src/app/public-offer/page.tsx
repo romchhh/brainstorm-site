@@ -1,16 +1,29 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript } from '@/lib/seo';
 import styles from './public-offer.module.css';
 
-export const metadata: Metadata = {
-  title: 'Публічна оферта — Brainstorm',
-  description: 'Умови участі та співпраці з ГО «Brainstorm».',
-};
+const pageTitle = 'Публічна оферта — Brainstorm';
+const pageDescription =
+  'Базові умови участі в програмах і заходах ГО «Brainstorm», а також принципи співпраці з організацією.';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: pageTitle,
+  description: pageDescription,
+  path: '/public-offer',
+  keywords: ['публічна оферта', 'умови участі', 'Brainstorm'],
+});
 
 export default function PublicOfferPage() {
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: 'Головна', path: '/' },
+    { name: 'Публічна оферта', path: '/public-offer' },
+  ]);
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <Header />
       <main className={styles.page}>
         <div className={styles.container}>
@@ -69,4 +82,3 @@ export default function PublicOfferPage() {
     </>
   );
 }
-

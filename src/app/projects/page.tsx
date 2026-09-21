@@ -2,59 +2,71 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Ticker from '@/components/Ticker';
-import { toCanonical } from '@/lib/seo';
+import PageHero, { HeroMark } from '@/components/PageHero';
+import ProjectsCatalog from '@/components/ProjectsCatalog';
+import ProjectsGallery from '@/components/ProjectsGallery';
+import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL } from '@/lib/seo';
 import styles from './page.module.css';
 
-const pageTitle = 'Проєкти — Brainstorm | Майстер-класи, турніри та програми';
+const pageTitle = 'Проєкти — Brainstorm | Реалізовані та поточні ініціативи';
 const pageDescription =
-  'Проєкти Brainstorm: майстер-класи, турніри, екскурсії та збори. Обирайте нові враження та пригоди.';
+  'Каталог проєктів Brainstorm: дебати, екологія, STEM. Фільтри за статусом і тематикою, фотогалерея подій і детальні кейси.';
 
-const pageUrl = toCanonical('/projects');
-
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
-  robots: { index: true, follow: true },
-  alternates: { canonical: pageUrl },
-};
+  path: '/projects',
+  image: '/about-desk.jpg',
+  imageAlt: 'Проєкти та ініціативи Brainstorm',
+  keywords: [
+    'проєкти Brainstorm',
+    'молодіжні ініціативи',
+    'дебатні проєкти',
+    'екологічні проєкти',
+    'STEM проєкти',
+    'фотогалерея подій',
+  ],
+});
 
 export default function ProjectsPage() {
+  const collectionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: pageTitle,
+    description: pageDescription,
+    url: `${SITE_URL}/projects/`,
+    inLanguage: 'uk-UA',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+  };
+
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: 'Головна', path: '/' },
+    { name: 'Проєкти', path: '/projects' },
+  ]);
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(collectionJsonLd)} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <Header />
       <main className={styles.main}>
-        <section className={styles.hero} data-reveal="up">
-          <div className={`${styles.container} ${styles.heroInner}`}>
-            <h1 className={styles.heroTitle}>
-              Не просто спостерігайте <span className={styles.heroAccent}>— долучайтеся.</span>
-            </h1>
-
-            <p className={styles.heroDesc}>
-              Майстер-класи, турніри, екскурсії, збори. Обирайте нові враження та пригоди.
-            </p>
-
-            <div className={styles.actions}>
-              <a href="#directions-block" className={styles.btnPrimary} aria-label="Перейти до проєктів">
-                ПЕРЕГЛЯНУТИ ПРОЄКТИ
-                <span className={styles.btnArrowCircle} aria-hidden>
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                    <path
-                      d="M3 13L13 3M13 3H5M13 3V11"
-                      stroke="#fff"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </a>
-
-              <a href="/about" className={styles.btnOutline} aria-label="Підтримати Brainstorm">
-                ПІДТРИМАТИ
-              </a>
-            </div>
-          </div>
-        </section>
+        <PageHero
+          title={
+            <>
+              Не просто спостерігайте
+              <br />
+              <HeroMark tone="pink">— долучайтеся.</HeroMark>
+            </>
+          }
+          description="Майстер-класи, турніри, екскурсії, табори. Обирайте нові враження та приєднуйтеся до ініціатив спільноти."
+          primary={{ href: '#projects-catalog', label: 'ПЕРЕГЛЯНУТИ ПРОЄКТИ' }}
+          secondary={{ href: '/contacts', label: 'ПІДТРИМАТИ' }}
+          leftImage="/about-outdoor.jpg"
+          leftAlt="Учасники екологічної ініціативи"
+          rightImage="/about-desk.jpg"
+          rightAlt="Учасники STEM-проєкту"
+          accent="pink"
+        />
 
         <Ticker />
 
@@ -65,15 +77,26 @@ export default function ProjectsPage() {
             </h2>
 
             <div className={styles.previewGrid} data-reveal="up">
-              <div className={`${styles.previewCard} ${styles.cardPink}`} aria-hidden />
-              <div className={`${styles.previewCard} ${styles.cardGreen}`} aria-hidden />
-              <div className={`${styles.previewCard} ${styles.cardBlue}`} aria-hidden />
+              <div className={`${styles.previewCard} ${styles.cardPink}`}>
+                <h3 className={styles.directionTitle}>Дебати та публічні виступи</h3>
+                <p className={styles.directionText}>Клуби, турніри, тренінги з аргументації та впевненого голосу.</p>
+              </div>
+              <div className={`${styles.previewCard} ${styles.cardGreen}`}>
+                <h3 className={styles.directionTitle}>Екологія та довкілля</h3>
+                <p className={styles.directionText}>Прибирання, моніторинг і просвітницькі ініціативи зі сталого розвитку.</p>
+              </div>
+              <div className={`${styles.previewCard} ${styles.cardBlue}`}>
+                <h3 className={styles.directionTitle}>Наука та робототехніка</h3>
+                <p className={styles.directionText}>STEM-майстерні, мейкер-лабораторії та змагання з робототехніки.</p>
+              </div>
             </div>
           </div>
         </section>
+
+        <ProjectsCatalog />
+        <ProjectsGallery />
       </main>
       <Footer />
     </>
   );
 }
-

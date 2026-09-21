@@ -108,25 +108,26 @@
 }
 
 .btnPrimary {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: var(--black);
-  color: #fff;
+  gap: var(--btn-gap);
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
+  background: var(--color-black);
+  color: var(--color-white);
   font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  padding: 16px 24px;
-  border-radius: 50px;
-  transition: background 0.2s;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--tracking-btn);
+  border-radius: var(--radius-pill);
+  transition: background var(--transition-fast);
   line-height: 1;
 }
 
 .btnArrowCircle {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: var(--btn-icon);
+  height: var(--btn-icon);
+  border-radius: var(--radius-full);
   background: transparent;
   border: 1px solid #fff;
   color: #fff;
@@ -134,14 +135,14 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .btnPrimary:hover { background: #333; }
 
 .btnPrimary:hover .btnArrowCircle,
 .btnPrimary:active .btnArrowCircle {
-  transform: translate(4px, 4px);
+  transform: translate(3px, 3px);
 }
 
 .btnPrimary:hover .btnArrowCircle svg,
@@ -150,24 +151,26 @@
 }
 
 .btnArrowCircle svg {
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .btnOutline {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
   font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  padding: 15px 24px;
-  border-radius: 50px;
-  border: 2px solid var(--black);
-  color: var(--black);
-  transition: background 0.2s;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--tracking-btn);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-strong) solid var(--color-black);
+  color: var(--color-black);
+  transition: background var(--transition-fast);
+  line-height: 1;
 }
 
-.btnOutline:hover { background: #f5f5f5; }
+.btnOutline:hover { background: var(--color-surface-hover); }
 
 .right {
   grid-area: right;

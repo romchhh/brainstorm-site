@@ -1,0 +1,18 @@
+{
+  "name": "Brainstorm",
+  "short_name": "Brainstorm",
+  "description": "Молодіжна громадська організація: дебати, екологія, STEM та громадські ініціативи в Україні.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "lang": "uk",
+  "icons": [
+    {
+      "src": "/favicon.webp",
+      "sizes": "any",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}

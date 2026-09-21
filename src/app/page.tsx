@@ -7,87 +7,39 @@ import Directions from '@/components/Directions';
 import News from '@/components/News';
 import Events from '@/components/Events';
 import Footer from '@/components/Footer';
-import { SITE_URL, toCanonical } from '@/lib/seo';
+import {
+  SITE_DEFAULT_DESCRIPTION,
+  SITE_DEFAULT_TITLE,
+  DEFAULT_OG_IMAGE,
+  buildPageMetadata,
+  breadcrumbJsonLd,
+  jsonLdScript,
+} from '@/lib/seo';
 
-const pageTitle = 'Brainstorm — молодіжна організація дебатів, екології та STEM в Україні';
-const pageDescription =
-  'Brainstorm — молодіжна громадська організація, що розвиває критичне мислення і лідерство через дебати, публічні виступи, екологічні ініціативи та науку з робототехнікою.';
-const ogImage = '/icons/brainstorm-logo.svg';
-
-export const metadata: Metadata = {
-  title: pageTitle,
-  description: pageDescription,
+export const metadata: Metadata = buildPageMetadata({
+  title: SITE_DEFAULT_TITLE,
+  description: SITE_DEFAULT_DESCRIPTION,
+  path: '/',
+  image: DEFAULT_OG_IMAGE,
+  imageAlt: 'Учасники Brainstorm на фестивалі повітряних зміїв',
   keywords: [
     'Brainstorm',
-    'молодіжна організація',
-    'громадська організація Україна',
-    'дебати',
-    'публічні виступи',
-    'критичне мислення',
-    'екологічні проєкти',
-    'STEM',
-    'робототехніка',
+    'молодіжна організація Україна',
+    'дебати для молоді',
+    'екологічні ініціативи',
+    'STEM робототехніка',
+    'громадська організація',
     'волонтерство',
-    'молодіжні програми',
+    'критичне мислення',
   ],
-  alternates: {
-    canonical: toCanonical('/'),
-  },
-  openGraph: {
-    type: 'website',
-    url: toCanonical('/'),
-    siteName: 'Brainstorm',
-    locale: 'uk_UA',
-    title: pageTitle,
-    description: pageDescription,
-    images: [
-      {
-        url: ogImage,
-        width: 1200,
-        height: 630,
-        alt: 'Brainstorm — молодіжна організація в Україні',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: pageTitle,
-    description: pageDescription,
-    images: [ogImage],
-  },
-  category: 'education',
-};
-
-const orgJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'NGO',
-  name: 'Brainstorm',
-  url: SITE_URL,
-  logo: `${SITE_URL}/icons/brainstorm-logo.svg`,
-  description: pageDescription,
-  areaServed: 'UA',
-  sameAs: [],
-};
-
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Brainstorm',
-  url: SITE_URL,
-  inLanguage: 'uk-UA',
-};
+});
 
 export default function Home() {
+  const breadcrumbs = breadcrumbJsonLd([{ name: 'Головна', path: '/' }]);
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <Header />
       <main>
         <Hero />

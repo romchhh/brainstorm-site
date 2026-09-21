@@ -85,46 +85,47 @@
 .btnOutline {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  border-radius: 999px;
-  padding: 14px 22px;
+  gap: var(--btn-gap);
+  border-radius: var(--radius-pill);
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
   font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--tracking-btn);
   line-height: 1;
 }
 
 .btnPrimary {
-  background: #111;
-  color: #fff;
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 .btnOutline {
-  border: 1.5px solid #111;
-  color: #111;
+  border: var(--border-width-strong) solid var(--color-black);
+  color: var(--color-black);
 }
 
 .btnIcon {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
+  width: var(--btn-icon-lg);
+  height: var(--btn-icon-lg);
+  border-radius: var(--radius-full);
   background: transparent;
   border: 1px solid #fff;
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .btnIcon svg {
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .btnPrimary:hover .btnIcon,
 .btnPrimary:active .btnIcon {
-  transform: translate(4px, 4px);
+  transform: translate(3px, 3px);
 }
 
 .btnPrimary:hover .btnIcon svg,
@@ -695,6 +696,18 @@
   font-size: 17px;
   color: #111;
   margin-bottom: 7px;
+}
+
+.memberLink {
+  display: inline-flex;
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--black);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .memberText {

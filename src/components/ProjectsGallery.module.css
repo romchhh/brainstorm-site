@@ -1,0 +1,77 @@
+.section {
+  padding: var(--space-7) 0 var(--space-10);
+}
+
+.container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  color: var(--color-black);
+  margin-bottom: var(--space-3);
+  line-height: var(--leading-tight);
+}
+
+.lead {
+  max-width: 680px;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.card {
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 1.4 / 1;
+  background: var(--color-surface-soft);
+}
+
+.photo {
+  object-fit: cover;
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px var(--space-4) var(--space-4);
+}
+
+.captionTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.captionDate {
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

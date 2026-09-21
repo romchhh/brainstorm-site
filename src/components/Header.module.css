@@ -2,8 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  background: var(--color-surface);
+  border-bottom: var(--border-width) solid var(--color-border);
 }
 
 .bar {
@@ -11,7 +11,7 @@
   max-width: var(--page-max);
   margin: 0 auto;
   padding: 0 var(--page-gutter);
-  height: 74px;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -38,16 +38,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 28px;
+  gap: var(--space-5);
 }
 
 .navLink {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--text-md);
   font-weight: 500;
   letter-spacing: 0.03em;
-  color: var(--black);
-  transition: color 0.2s;
+  color: var(--color-black);
+  transition: color var(--transition-fast);
   white-space: nowrap;
 }
 
@@ -59,59 +59,55 @@
 }
 
 .cta {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background: var(--black);
-  color: #fff;
+  gap: var(--btn-gap);
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
+  background: var(--color-black);
+  color: var(--color-white);
   font-family: var(--font-display);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 10px 18px;
-  border-radius: 50px;
+  font-size: var(--btn-font-size);
+  font-weight: var(--btn-font-weight);
+  letter-spacing: var(--tracking-btn);
+  border-radius: var(--radius-pill);
   white-space: nowrap;
-  transition: background 0.2s;
+  transition: background var(--transition-fast);
   position: relative;
   z-index: 202;
+  line-height: 1;
 }
 
 .cta:hover { background: #333; }
 
 .arrowCircle {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: var(--btn-icon);
+  height: var(--btn-icon);
+  border-radius: var(--radius-full);
   background: transparent;
-  border: 1px solid #fff;
-  color: #fff;
+  border: 1px solid currentColor;
+  color: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .arrowIcon {
   display: block;
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .cta:hover .arrowCircle,
-.cta:active .arrowCircle {
-  transform: translate(4px, 4px);
-}
-
+.cta:active .arrowCircle,
 .mobileCta:hover .arrowCircle,
 .mobileCta:active .arrowCircle {
-  transform: translate(4px, 4px);
+  transform: translate(3px, 3px);
 }
 
 .cta:hover .arrowIcon,
-.cta:active .arrowIcon {
-  transform: rotate(18deg);
-}
-
+.cta:active .arrowIcon,
 .mobileCta:hover .arrowIcon,
 .mobileCta:active .arrowIcon {
   transform: rotate(18deg);
@@ -128,18 +124,16 @@
 .mobileSocialLink {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(17, 17, 17, 0.4);
+  border-radius: var(--radius-full);
+  border: var(--border-width-strong) solid rgba(17, 17, 17, 0.35);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--black);
-  opacity: 0.8;
-  transition: opacity 0.2s, color 0.2s, border-color 0.2s;
+  color: var(--color-black);
+  transition: opacity var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .mobileSocialLink:hover {
-  opacity: 1;
   color: var(--pink);
   border-color: var(--pink);
 }
@@ -194,7 +188,7 @@
 
 @media (max-width: 900px) {
   .bar {
-    height: 70px;
+    height: var(--header-height);
   }
 
   .logoImg {
@@ -213,11 +207,11 @@
     max-width: none;
     transform: none;
     z-index: 200;
-    background: #fff;
+    background: var(--color-surface);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 28px;
+    gap: var(--space-6);
     padding: 96px var(--page-gutter) 48px;
     margin: 0;
   }
@@ -230,22 +224,23 @@
     font-family: var(--font-display);
     font-size: clamp(22px, 6vw, 32px);
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-btn);
   }
 
   .mobileCta {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-    background: var(--black);
-    color: #fff;
+    gap: var(--btn-gap);
+    margin-top: var(--space-4);
+    min-height: var(--btn-height);
+    background: var(--color-black);
+    color: var(--color-white);
     font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    padding: 14px 24px;
-    border-radius: 50px;
+    font-size: var(--btn-font-size);
+    font-weight: var(--btn-font-weight);
+    letter-spacing: var(--tracking-btn);
+    padding: 0 var(--btn-padding-x);
+    border-radius: var(--radius-pill);
   }
 
   .cta {
@@ -261,7 +256,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 14px;
-    margin-top: 18px;
+    margin-top: var(--space-5);
     width: 100%;
   }
 }

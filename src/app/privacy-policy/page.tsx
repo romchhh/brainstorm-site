@@ -1,16 +1,29 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript } from '@/lib/seo';
 import styles from './privacy-policy.module.css';
 
-export const metadata: Metadata = {
-  title: 'Політика конфіденційності — Brainstorm',
-  description: 'Як ГО «Brainstorm» обробляє персональні дані на сайті.',
-};
+const pageTitle = 'Політика конфіденційності — Brainstorm';
+const pageDescription =
+  'Як ГО «Brainstorm» збирає, зберігає та використовує персональні дані відвідувачів сайту.';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: pageTitle,
+  description: pageDescription,
+  path: '/privacy-policy',
+  keywords: ['політика конфіденційності', 'персональні дані', 'Brainstorm'],
+});
 
 export default function PrivacyPolicyPage() {
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: 'Головна', path: '/' },
+    { name: 'Політика конфіденційності', path: '/privacy-policy' },
+  ]);
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <Header />
       <main className={styles.page}>
         <div className={styles.container}>
@@ -64,4 +77,3 @@ export default function PrivacyPolicyPage() {
     </>
   );
 }
-

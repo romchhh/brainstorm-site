@@ -3,97 +3,54 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Ticker from '@/components/Ticker';
-import { SITE_URL, toCanonical } from '@/lib/seo';
+import {
+  SITE_URL,
+  toCanonical,
+  buildPageMetadata,
+  breadcrumbJsonLd,
+  jsonLdScript,
+} from '@/lib/seo';
 import styles from './page.module.css';
 
-const pageTitle = 'Про нас — Brainstorm | Молодіжна спільнота дебатів, екології та STEM';
+const pageTitle = 'Про нас — Brainstorm | Місія, цінності та команда';
 const pageDescription =
   'Дізнайтесь про місію Brainstorm, наші цінності, команду та програми для молоді: дебати, екологічні ініціативи, наука й робототехніка.';
 const pageUrl = toCanonical('/about');
 const ogImage = '/26d199e4c2adfb0b0885677156726a723c55e0b9.jpg';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
   description: pageDescription,
+  path: '/about',
+  image: ogImage,
+  imageAlt: 'Команда та спільнота Brainstorm',
   keywords: [
     'Про нас Brainstorm',
-    'молодіжна організація Україна',
+    'місія молодіжної організації',
+    'цінності ГО',
+    'команда Brainstorm',
     'дебати для молоді',
     'екологічні ініціативи',
     'STEM та робототехніка',
-    'молодіжна спільнота',
-    'громадські проєкти',
   ],
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: pageUrl,
-  },
-  openGraph: {
-    title: pageTitle,
-    description: pageDescription,
-    url: pageUrl,
-    siteName: 'Brainstorm',
-    locale: 'uk_UA',
-    type: 'website',
-    images: [
-      {
-        url: ogImage,
-        width: 1200,
-        height: 630,
-        alt: 'Команда та спільнота Brainstorm',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: pageTitle,
-    description: pageDescription,
-    images: [ogImage],
-  },
-};
+});
 
 export default function AboutPage() {
   const aboutPageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
-    name: 'Про нас — Brainstorm',
+    name: pageTitle,
     url: pageUrl,
     description: pageDescription,
     inLanguage: 'uk-UA',
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Brainstorm',
-      url: SITE_URL,
-    },
-    about: {
-      '@type': 'NGO',
-      name: 'Brainstorm',
-      url: SITE_URL,
-      areaServed: 'UA',
-    },
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#organization` },
   };
 
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Головна',
-        item: toCanonical('/'),
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Про нас',
-        item: pageUrl,
-      },
-    ],
-  };
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: 'Головна', path: '/' },
+    { name: 'Про нас', path: '/about' },
+  ]);
 
   const values = [
     {
@@ -148,9 +105,27 @@ export default function AboutPage() {
     },
   ] as const;
   const teamCards = [
-    { role: 'ПОСАДА', name: "Ім'я Прізвище", tone: styles.rolePink },
-    { role: 'ПОСАДА', name: "Ім'я Прізвище", tone: styles.roleBlue },
-    { role: 'ПОСАДА', name: "Ім'я Прізвище", tone: styles.roleGreen },
+    {
+      role: 'Координаторка програм',
+      name: 'Олена Коваль',
+      text: 'Розвиває освітні формати та допомагає командам запускати нові ініціативи.',
+      linkedin: 'https://www.linkedin.com/',
+      tone: styles.rolePink,
+    },
+    {
+      role: 'Ментор дебатів',
+      name: 'Андрій Мельник',
+      text: 'Готує учасників до турнірів і розвиває культуру аргументованої дискусії.',
+      linkedin: 'https://www.linkedin.com/',
+      tone: styles.roleBlue,
+    },
+    {
+      role: 'STEM-фасилітаторка',
+      name: 'Марія Шевченко',
+      text: 'Веде майстерні з робототехніки та супроводжує інженерні проєкти молоді.',
+      linkedin: 'https://www.linkedin.com/',
+      tone: styles.roleGreen,
+    },
   ] as const;
   const reviews = [
     { tone: styles.reviewBlue, size: styles.reviewWide },
@@ -164,11 +139,11 @@ export default function AboutPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }}
+        dangerouslySetInnerHTML={jsonLdScript(aboutPageJsonLd)}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)}
       />
       <Header />
       <main>
@@ -365,29 +340,37 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className={styles.communitySection} data-reveal="right">
+        <section className={styles.communitySection} id="community" data-reveal="right">
           <div className={styles.communityContainer}>
             <div className={styles.communityHead}>
               <h2 className={styles.communityTitle}>
-                Знайомтесь зі <span className={styles.communityAccent}>спільнотою</span>
+                Наша <span className={styles.communityAccent}>команда</span>
               </h2>
               <Image src="/icons/wave-pink.svg" alt="" width={74} height={16} className={styles.communityWave} aria-hidden />
               <Image src="/icons/sticker-never-argue.svg" alt="" width={183} height={84} className={styles.communitySticker} aria-hidden />
             </div>
             <p className={styles.communityDesc}>
-              Не сторінка команди. Сторінка спільноти. Це люди, які з&apos;являються, створюють речі та роблять Brainstorm таким, яким він є.
+              Люди, які запускають програми, менторять учасників і тримають спільноту живою. Фото однакові за форматом — їх легко оновлювати після підключення CMS.
             </p>
 
             <div className={styles.memberSlider}>
               <button className={styles.slideArrow} aria-label="Назад">←</button>
               <div className={styles.memberGrid}>
-                {teamCards.map((card, i) => (
-                  <article key={i} className={styles.memberCard}>
+                {teamCards.map((card) => (
+                  <article key={card.name} className={styles.memberCard}>
                     <div className={styles.memberMedia} />
                     <div className={styles.memberBody}>
                       <span className={`${styles.roleBadge} ${card.tone}`}>{card.role}</span>
                       <h3 className={styles.memberName}>{card.name}</h3>
-                      <p className={styles.memberText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                      <p className={styles.memberText}>{card.text}</p>
+                      <a
+                        href={card.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={styles.memberLink}
+                      >
+                        LinkedIn
+                      </a>
                     </div>
                   </article>
                 ))}

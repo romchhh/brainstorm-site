@@ -1,7 +1,19 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import styles from './not-found.module.css';
+
+export const metadata: Metadata = {
+  title: {
+    absolute: 'Сторінку не знайдено — Brainstorm',
+  },
+  description: 'Запитувана сторінка відсутня або була переміщена.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default function NotFound() {
   return (
@@ -19,7 +31,7 @@ export default function NotFound() {
             <Link href="/" className={styles.primaryBtn}>
               Повернутись на головну
             </Link>
-            <Link href="/#about" className={styles.secondaryBtn}>
+            <Link href="/about" className={styles.secondaryBtn}>
               Перейти до розділів сайту
             </Link>
           </div>
@@ -29,4 +41,3 @@ export default function NotFound() {
     </>
   );
 }
-

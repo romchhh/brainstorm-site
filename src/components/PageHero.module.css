@@ -1,0 +1,243 @@
+.hero {
+  padding: var(--space-5) 0 var(--space-4);
+  background: var(--color-surface);
+  min-height: calc(100dvh - var(--header-height));
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.container {
+  position: relative;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) minmax(0, 1fr) minmax(270px, 380px);
+  grid-template-areas:
+    "sticker  center photoTop"
+    "waveL    center photoTop"
+    "photoBot center stickerArg"
+    "photoBot center waveR";
+  column-gap: var(--space-5);
+  row-gap: var(--space-3);
+  align-items: start;
+}
+
+.center {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-hero);
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  letter-spacing: 0;
+  color: var(--color-black);
+}
+
+.mark {
+  position: relative;
+  font-style: normal;
+  z-index: 0;
+  display: inline;
+}
+
+.mark::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: 5px;
+  height: 16px;
+  z-index: -1;
+  border-radius: var(--radius-xs);
+}
+
+.mark_pink::after { background: var(--pink); }
+.mark_yellow::after { background: var(--yellow); }
+.mark_blue::after { background: var(--blue); }
+.mark_green::after { background: var(--green); }
+
+.desc {
+  max-width: 640px;
+  margin: var(--space-5) auto 0;
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
+  color: var(--color-text);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.topPhoto,
+.bottomPhoto {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.topPhoto {
+  grid-area: photoTop;
+  width: 100%;
+  aspect-ratio: 1.5 / 1;
+}
+
+.bottomPhoto {
+  grid-area: photoBot;
+  width: 100%;
+  aspect-ratio: 1.5 / 1;
+  align-self: end;
+}
+
+.photo {
+  object-fit: cover;
+}
+
+.stickerCritical,
+.stickerArgument,
+.waveLeft,
+.waveRight {
+  height: auto;
+  pointer-events: none;
+}
+
+.stickerCritical {
+  grid-area: sticker;
+  width: 96px;
+}
+
+.waveLeft {
+  grid-area: waveL;
+  width: 66px;
+}
+
+.stickerArgument {
+  grid-area: stickerArg;
+  width: 88px;
+  justify-self: end;
+  margin-top: var(--space-3);
+}
+
+.waveRight {
+  grid-area: waveR;
+  width: 66px;
+  justify-self: end;
+  align-self: center;
+}
+
+.accentBlob {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: var(--radius-full);
+  filter: blur(40px);
+  opacity: 0.22;
+  z-index: 0;
+  pointer-events: none;
+  right: 18%;
+  top: 12%;
+}
+
+.pink { background: var(--pink); }
+.yellow { background: var(--yellow); }
+.blue { background: var(--blue); }
+.green { background: var(--green); }
+
+@media (max-width: 1100px) {
+  .desc {
+    font-size: var(--text-base);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding: var(--space-4) 0 var(--space-3);
+    min-height: auto;
+    display: block;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    row-gap: var(--space-4);
+  }
+
+  .center {
+    order: 1;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .title {
+    font-size: var(--text-hero-sm);
+  }
+
+  .desc {
+    margin-top: var(--space-4);
+    font-size: var(--text-md);
+    text-align: left;
+  }
+
+  .stickerCritical {
+    order: 0;
+    width: 90px;
+    align-self: flex-end;
+  }
+
+  .topPhoto {
+    order: 2;
+    width: 88%;
+    align-self: flex-end;
+  }
+
+  .bottomPhoto {
+    order: 3;
+    width: 88%;
+    align-self: flex-start;
+  }
+
+  .actions {
+    order: 4;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin-top: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .actions :global(.ui-btn) {
+    flex: 1;
+    min-width: 0;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  .waveLeft,
+  .stickerArgument,
+  .waveRight,
+  .accentBlob {
+    display: none;
+  }
+
+  .mark::after {
+    height: 12px;
+    bottom: 4px;
+  }
+}
