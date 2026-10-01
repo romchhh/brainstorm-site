@@ -39,23 +39,30 @@
 }
 
 .chip {
-  border: var(--border-width-strong) solid var(--color-border);
-  background: var(--color-surface);
+  border: var(--border-width-strong) solid var(--color-black);
+  background: var(--color-white);
   color: var(--color-black);
   border-radius: var(--radius-pill);
-  min-height: 40px;
-  padding: 0 var(--space-4);
+  min-height: 44px;
+  padding: 0 18px;
   font-family: var(--font-display);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.03em;
   cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.08);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.chip:hover {
+  transform: translate(-1px, -1px);
 }
 
 .chipActive {
-  background: var(--color-black);
+  background: var(--color-yellow);
   border-color: var(--color-black);
-  color: var(--color-white);
+  color: var(--color-black);
+  box-shadow: 5px 5px 0 rgba(17, 17, 17, 0.12);
 }
 
 .grid {
@@ -65,18 +72,25 @@
 }
 
 .card {
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: var(--border-width-strong) solid var(--color-black);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--color-white);
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-soft), 8px 8px 0 rgba(17, 17, 17, 0.07);
 }
 
 .media {
   position: relative;
   aspect-ratio: 1.35 / 1;
-  background: var(--color-surface-soft);
+  background: var(--color-white);
 }
 
 .photo {
@@ -112,7 +126,7 @@
 }
 
 .badgeMuted {
-  background: var(--color-surface-soft);
+  background: rgba(250, 217, 42, 0.35);
   color: var(--color-text-muted);
 }
 

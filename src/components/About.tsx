@@ -1,4 +1,8 @@
 import Image from 'next/image';
+import type { Locale } from '@/i18n/locale';
+import { localizedPath } from '@/i18n/locale';
+import { getMessages } from '@/i18n/messages';
+import { CtaArrow } from '@/components/CtaPanel';
 import styles from './About.module.css';
 
 const leftPhotos = [
@@ -25,7 +29,8 @@ function PhotoCard({ src, alt, className }: { src: string; alt: string; classNam
   );
 }
 
-export default function About() {
+export default function About({ locale = 'uk' }: { locale?: Locale }) {
+  const m = getMessages(locale);
   return (
     <section className={styles.about} id="about" data-reveal="fade">
       <div className={styles.container}>
@@ -53,13 +58,9 @@ export default function About() {
               виступів — кожен знайде своє місце у Brainstorm.
             </p>
           </div>
-          <a href="/about" className={styles.btnDesktop}>
-            ЧИТАТИ БІЛЬШЕ
-            <span className={styles.btnIcon}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </span>
+          <a href={localizedPath('/about', locale)} className={`ui-btn ui-btn--primary ${styles.btnDesktop}`}>
+            {m.cta.readMore}
+            <CtaArrow />
           </a>
         </div>
 
@@ -76,13 +77,9 @@ export default function About() {
           </div>
         </div>
 
-        <a href="/about" className={styles.btnMobile}>
-          ЧИТАТИ БІЛЬШЕ
-          <span className={styles.btnIcon}>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </span>
+        <a href={localizedPath('/about', locale)} className={`ui-btn ui-btn--primary ${styles.btnMobile}`}>
+          {m.cta.readMore}
+          <CtaArrow />
         </a>
       </div>
     </section>

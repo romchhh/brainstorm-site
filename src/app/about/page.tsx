@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Ticker from '@/components/Ticker';
+import TickerFromCms from '@/components/TickerFromCms';
+import { cmsReviews, cmsSettings, cmsTeam } from '@/lib/cms/content';
+import ImpactCharts from '@/components/ImpactCharts';
+import { getServerLocale } from '@/lib/localeServer';
 import {
   SITE_URL,
   toCanonical,
@@ -35,7 +38,12 @@ export const metadata: Metadata = buildPageMetadata({
   ],
 });
 
-export default function AboutPage() {
+export const revalidate = 300;
+
+export default async function AboutPage() {
+  const locale = await getServerLocale();
+  const settings = cmsSettings(locale);
+
   const aboutPageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
@@ -104,36 +112,43 @@ export default function AboutPage() {
       tone: styles.activityPink,
     },
   ] as const;
-  const teamCards = [
-    {
-      role: 'Координаторка програм',
-      name: 'Олена Коваль',
-      text: 'Розвиває освітні формати та допомагає командам запускати нові ініціативи.',
-      linkedin: 'https://www.linkedin.com/',
-      tone: styles.rolePink,
-    },
-    {
-      role: 'Ментор дебатів',
-      name: 'Андрій Мельник',
-      text: 'Готує учасників до турнірів і розвиває культуру аргументованої дискусії.',
-      linkedin: 'https://www.linkedin.com/',
-      tone: styles.roleBlue,
-    },
-    {
-      role: 'STEM-фасилітаторка',
-      name: 'Марія Шевченко',
-      text: 'Веде майстерні з робототехніки та супроводжує інженерні проєкти молоді.',
-      linkedin: 'https://www.linkedin.com/',
-      tone: styles.roleGreen,
-    },
-  ] as const;
-  const reviews = [
-    { tone: styles.reviewBlue, size: styles.reviewWide },
-    { tone: styles.reviewPink, size: styles.reviewWide },
-    { tone: styles.reviewPink, size: styles.reviewSmall },
-    { tone: styles.reviewYellow, size: styles.reviewSmall },
-    { tone: styles.reviewGreen, size: styles.reviewWide },
-  ] as const;
+  const teamMembers = cmsTeam(locale);
+  const reviewItems = cmsReviews(locale);
+
+  const teamToneMap = {
+    pink: styles.rolePink,
+    blue: styles.roleBlue,
+    green: styles.roleGreen,
+    yellow: styles.rolePink,
+  } as const;
+
+  const reviewToneMap = {
+    blue: styles.reviewBlue,
+    pink: styles.reviewPink,
+    yellow: styles.reviewYellow,
+    green: styles.reviewGreen,
+  } as const;
+
+  const reviewSizeMap = {
+    wide: styles.reviewWide,
+    small: styles.reviewSmall,
+  } as const;
+
+  const teamCards = teamMembers.map((member) => ({
+    role: member.role,
+    name: member.name,
+    text: member.text,
+    linkedin: member.linkedin,
+    photo: member.photo,
+    tone: teamToneMap[member.tone] ?? styles.rolePink,
+  }));
+
+  const reviews = reviewItems.map((review) => ({
+    tone: reviewToneMap[review.tone] ?? styles.reviewBlue,
+    size: reviewSizeMap[review.size] ?? styles.reviewWide,
+    text: review.text,
+    author: review.author,
+  }));
 
   return (
     <>
@@ -145,7 +160,7 @@ export default function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)}
       />
-      <Header />
+      <Header locale={locale} />
       <main>
         <section className={styles.hero} data-reveal="fade">
           <div className={styles.container}>
@@ -177,31 +192,30 @@ export default function AboutPage() {
               />
             </div>
 
-            <div className={styles.center}>
-              <h1 className={styles.title}>
-                Ми допомагаємо <em className={styles.pink}>молоді</em>
-                <br />
-                бути <em className={styles.blue}>лідерами</em>, творити
-                <br />
-                й розвиватися
-              </h1>
+            <div className={styles.centerColumn}>
+              <div className={styles.center}>
+                <h1 className={styles.title}>
+                  <span className={styles.titleLine}>
+                    Ми допомагаємо <em className={styles.pink}>молоді</em>
+                  </span>
+                  <span className={styles.titleLine}>
+                    бути <em className={styles.blue}>лідерами</em>, творити й розвиватися
+                  </span>
+                </h1>
 
-              <p className={styles.desc}>
-                Brainstorm — це молодіжна спільнота, що об&apos;єднує понад 2500 учасників з усієї України.
-                Ми реалізуємо програми у сферах дебатів, екології та робототехніки, адже переконані:
-                наступне покоління не повинно чекати на зміни.
-              </p>
+                <p className={styles.desc}>
+                  Brainstorm — це молодіжна спільнота, що об&apos;єднує понад 2500 учасників з усієї України.
+                  Ми реалізуємо програми у сферах дебатів, екології та робототехніки, адже переконані:
+                  наступне покоління не повинно чекати на зміни.
+                </p>
+              </div>
 
               <div className={styles.actions}>
-                <a href="/#join" className={styles.btnPrimary}>
+                <a href="/#join" className="ui-btn ui-btn--primary">
                   ПІДТРИМАТИ
-                  <span className={styles.btnIcon}>
-                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
+                  <span className="ui-btn__arrow" aria-hidden>→</span>
                 </a>
-                <a href="/#directions" className={styles.btnOutline}>
+                <a href="/#directions" className="ui-btn ui-btn--outline">
                   НАШІ НАПРЯМКИ
                 </a>
               </div>
@@ -237,7 +251,8 @@ export default function AboutPage() {
             />
           </div>
         </section>
-        <Ticker />
+        <ImpactCharts settings={settings} locale={locale} />
+        <TickerFromCms locale={locale} />
 
         <section className={styles.valuesSection} data-reveal="up">
           <div className={styles.valuesContainer}>
@@ -358,7 +373,11 @@ export default function AboutPage() {
               <div className={styles.memberGrid}>
                 {teamCards.map((card) => (
                   <article key={card.name} className={styles.memberCard}>
-                    <div className={styles.memberMedia} />
+                    <div className={`${styles.memberMedia} ui-card-photo`}>
+                      {card.photo ? (
+                        <Image src={card.photo} alt={card.name} fill className={styles.memberPhoto} sizes="280px" />
+                      ) : null}
+                    </div>
                     <div className={styles.memberBody}>
                       <span className={`${styles.roleBadge} ${card.tone}`}>{card.role}</span>
                       <h3 className={styles.memberName}>{card.name}</h3>
@@ -393,12 +412,12 @@ export default function AboutPage() {
             <div className={styles.reviewsGrid}>
               {reviews.map((review, i) => (
                 <article key={i} className={`${styles.reviewCard} ${review.size}`}>
-                  <p className={styles.reviewText}>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet.</p>
+                  <p className={styles.reviewText}>{review.text}</p>
                   <div className={styles.reviewAuthor}>
                     <span className={`${styles.reviewDot} ${review.tone}`} />
                     <div>
-                      <div className={styles.reviewName}>Ім&apos;я, вік</div>
-                      <div className={styles.reviewRole}>Програма</div>
+                      <div className={styles.reviewName}>{review.author}</div>
+                      <div className={styles.reviewRole}>Спільнота Brainstorm</div>
                     </div>
                   </div>
                 </article>
@@ -429,7 +448,7 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

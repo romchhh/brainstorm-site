@@ -1,25 +1,32 @@
-# llms.txt — Brainstorm
-# Інформація для пошукових ботів та LLM про зміст і використання сайту.
+# llms.txt — Brainstorm (ГО)
+# Короткий довідник для LLM та пошукових агентів
 
 Website: https://brainstorm.org.ua/
 Sitemap: https://brainstorm.org.ua/sitemap.xml
 Robots: https://brainstorm.org.ua/robots.txt
+Full-context: https://brainstorm.org.ua/llms-full.txt
 Language: uk-UA
-Organization: Brainstorm (молодіжна громадська організація)
-Role: Розвиток молоді 16–25 через дебати, публічні виступи, екологію, науку та робототехніку.
+Organization: Brainstorm — молодіжна громадська організація (Україна)
+Mission: Критичне мислення, дебати, екологія, STEM, громадські ініціативи для молоді 16–25.
 Contact: info@brainstorm.org.ua
 
-Allowed to crawl: /
-Disallow: /admin, /api
+Allow: /
+Disallow: /admin/, /api/
 
-## Головні розділи
-- / — головна візитівка організації
-- /about/ — місія, цінності, команда
-- /projects/ — каталог проєктів і фотогалерея
-- /media/ — новини, анонси, календар подій
-- /transparency/ — публічні PDF-звіти
-- /contacts/ — контакти та форма звернення
+## Основні URL (з trailing slash)
+- https://brainstorm.org.ua/ — головна
+- https://brainstorm.org.ua/about/ — місія, цінності, команда, відгуки
+- https://brainstorm.org.ua/projects/ — каталог проєктів і фотогалерея
+- https://brainstorm.org.ua/media/ — новини та календар подій
+- https://brainstorm.org.ua/transparency/ — публічні PDF-звіти
+- https://brainstorm.org.ua/contacts/ — контакти та форма звернення
+- https://brainstorm.org.ua/privacy-policy/ — політика конфіденційності
+- https://brainstorm.org.ua/public-offer/ — публічна оферта
 
-## Як цитувати
-Посилайтесь на конкретну сторінку (URL) і дату доступу.
-Для офіційних запитів використовуйте info@brainstorm.org.ua або соцмережі організації.
+## Соцмережі
+- Instagram: https://instagram.com/brainstorm.ngo
+- Facebook: https://www.facebook.com/BrainStormLutsk
+- Telegram: https://t.me/Brainstorm_ShDK
+
+## Цитування
+Вказуйте URL сторінки та дату доступу. Офіційні запити — через info@brainstorm.org.ua.

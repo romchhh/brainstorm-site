@@ -1,32 +1,58 @@
 import Image from 'next/image';
+import type { Locale } from '@/i18n/locale';
+import { localizedPath } from '@/i18n/locale';
+import { getMessages } from '@/i18n/messages';
+import { CtaArrow } from '@/components/CtaPanel';
+import ImpactStats from '@/components/ImpactStats';
+import { cmsSettings } from '@/lib/cms/content';
 import styles from './Directions.module.css';
 
-const directions = [
+const directionsUk = [
   {
     color: '#F5C842',
+    emoji: '💬',
     title: 'Дебати та публічні виступи',
     desc: 'Дебатні клуби, семінари з аргументації та турніри з публічних виступів, які дають молодим людям можливість голосу та впевненість у його використанні.',
     decor: 'debates' as const,
   },
   {
     color: '#7DC86E',
+    emoji: '🌱',
     title: 'Екологія та довкілля',
     desc: 'Прибирання річок, моніторинг біорізноманіття та просвітницька діяльність у сфері сталого розвитку. Справжня польова робота, що поєднує молодь із природою та наукою.',
     decor: 'wave' as const,
   },
   {
     color: '#6BB8D4',
+    emoji: '🤖',
     title: 'Наука та робототехніка',
     desc: 'Практичні STEM-майстерні, змагання з робототехніки та мейкер-лабораторії, де допитливість перетворюється на інженерні навички.',
     decor: 'argue' as const,
   },
 ];
 
-const stats = [
-  { value: '12 400', label: 'Молодих людей у наших програмах' },
-  { value: '860', label: 'Волонтерів та менторів' },
-  { value: '240', label: 'Реалізованих громадських проєктів' },
-  { value: '38', label: 'Міст на мапі' },
+const directionsEn = [
+  {
+    color: '#F5C842',
+    emoji: '💬',
+    title: 'Debates & public speaking',
+    desc: 'Debate clubs, argumentation workshops, and public-speaking tournaments that give young people a voice and confidence to use it.',
+    decor: 'debates' as const,
+  },
+  {
+    color: '#7DC86E',
+    emoji: '🌱',
+    title: 'Ecology & environment',
+    desc: 'River clean-ups, biodiversity monitoring, and sustainability education — hands-on field work connecting youth with nature and science.',
+    decor: 'wave' as const,
+  },
+  {
+    color: '#6BB8D4',
+    emoji: '🤖',
+    title: 'Science & robotics',
+    desc: 'STEM workshops, robotics competitions, and maker labs where curiosity turns into engineering skills.',
+    decor: 'argue' as const,
+  },
 ];
 
 function CardDecor({ type }: { type: 'debates' | 'wave' | 'argue' }) {
@@ -68,12 +94,16 @@ function CardDecor({ type }: { type: 'debates' | 'wave' | 'argue' }) {
   );
 }
 
-export default function Directions() {
+export default function Directions({ locale = 'uk' }: { locale?: Locale }) {
+  const m = getMessages(locale);
+  const settings = cmsSettings(locale);
+  const directions = locale === 'en' ? directionsEn : directionsUk;
+
   return (
     <section className={styles.section} id="directions" data-reveal="up">
       <div className={styles.container}>
         <h2 className={styles.title}>
-          3 напрямки, <em className={styles.accent}>1 місія</em>
+          {m.directions.title} <em className={styles.accent}>{m.directions.accent}</em>
         </h2>
 
         <div className={styles.cards} data-reveal="up">
@@ -81,55 +111,29 @@ export default function Directions() {
             <div key={direction.title} className={styles.cardWrap} data-reveal="up">
               <CardDecor type={direction.decor} />
               <article className={styles.card}>
-                <div className={styles.dot} style={{ background: direction.color }} />
+                <div className={styles.cardTop}>
+                  <span className={styles.cardEmoji} aria-hidden>
+                    {direction.emoji}
+                  </span>
+                  <div className={styles.dot} style={{ background: direction.color }} />
+                </div>
                 <h3 className={styles.cardTitle}>{direction.title}</h3>
                 <p className={styles.cardDesc}>{direction.desc}</p>
-                <a href="#projects" className={styles.cardLink}>
-                  Переглянути проєкти
-                  <span className={styles.linkIcon}>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 13L13 3M13 3H5M13 3V11" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
+                <a href={localizedPath('/projects', locale)} className="ui-btn ui-btn--primary">
+                  {m.directions.viewProjects}
+                  <CtaArrow />
                 </a>
               </article>
             </div>
           ))}
         </div>
 
-        <div className={styles.statsBanner} data-reveal="fade">
-          <Image
-            src="/icons/wave-pink.svg"
-            alt=""
-            width={88}
-            height={20}
-            className={styles.statsWaveLeft}
-            aria-hidden
-          />
-          <Image
-            src="/icons/wave-pink.svg"
-            alt=""
-            width={88}
-            height={20}
-            className={styles.statsWaveRight}
-            aria-hidden
-          />
-
-          <div className={styles.statsInner}>
-            <h3 className={styles.statsHeading}>
-              Маленькі ідеї, масштабовані дуже гучною спільнотою.
-            </h3>
-
-            <div className={styles.statsGrid}>
-              {stats.map((stat) => (
-                <div key={stat.label} className={styles.stat}>
-                  <span className={styles.statValue}>{stat.value}</span>
-                  <span className={styles.statLabel}>{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ImpactStats
+          settings={settings}
+          locale={locale}
+          variant="embedded"
+          bannerHeadline={m.directions.statsHeadline}
+        />
       </div>
     </section>
   );

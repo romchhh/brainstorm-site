@@ -1,6 +1,8 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import '../styles/globals.css';
 import ScrollReveal from '@/components/ScrollReveal';
+import SeoPageView from '@/components/SeoPageView';
+import { cmsSettings } from '@/lib/cms/content';
 import {
   SITE_DEFAULT_DESCRIPTION,
   SITE_DEFAULT_TITLE,
@@ -13,6 +15,8 @@ import {
   organizationJsonLd,
   websiteJsonLd,
   jsonLdScript,
+  llmsUrl,
+  sitemapUrl,
 } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -48,7 +52,11 @@ export const metadata: Metadata = {
     canonical: `${SITE_URL}/`,
     languages: {
       'uk-UA': `${SITE_URL}/`,
+      'en-US': `${SITE_URL}/en/`,
       'x-default': `${SITE_URL}/`,
+    },
+    types: {
+      'text/plain': [{ url: llmsUrl(), title: 'llms.txt' }],
     },
   },
   icons: {
@@ -56,7 +64,7 @@ export const metadata: Metadata = {
     shortcut: '/favicon.webp',
     apple: '/favicon.webp',
   },
-  manifest: '/site.webmanifest',
+  manifest: '/manifest.webmanifest',
   openGraph: {
     type: 'website',
     locale: 'uk_UA',
@@ -81,24 +89,42 @@ export const metadata: Metadata = {
   },
   other: {
     'theme-color': '#111111',
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { 'google-site-verification': process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#ffffff',
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = cmsSettings();
+
   return (
     <html lang="uk">
       <head>
+        <link rel="sitemap" type="application/xml" href={sitemapUrl()} />
+        <link rel="author" type="text/plain" href={llmsUrl()} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={jsonLdScript(organizationJsonLd())}
+          dangerouslySetInnerHTML={jsonLdScript(
+            organizationJsonLd({
+              email: settings.email,
+              telephone: settings.phone,
+              description: settings.metaDescription,
+              url: settings.siteUrl,
+            }),
+          )}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={jsonLdScript(websiteJsonLd())}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(websiteJsonLd())} />
       </head>
       <body>
         <ScrollReveal />
+        <SeoPageView />
         {children}
       </body>
     </html>

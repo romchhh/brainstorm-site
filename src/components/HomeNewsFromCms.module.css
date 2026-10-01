@@ -1,0 +1,144 @@
+.section {
+  padding: var(--section-pad-y) 0;
+  background: var(--color-page-bg);
+  border-top: var(--section-gap) solid var(--color-border);
+}
+
+.container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 24px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  flex: 1 1 280px;
+}
+
+.accent {
+  color: var(--color-pink);
+  font-style: normal;
+}
+
+.lead {
+  flex: 1 1 100%;
+  max-width: 680px;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+.allLink,
+.headCta {
+  margin-left: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.card {
+  border: var(--border-width-strong) solid var(--color-black);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft), 6px 6px 0 rgba(17, 17, 17, 0.08);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+.photo {
+  object-fit: cover;
+}
+
+.body {
+  padding: 16px 16px 18px;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tag, var(--yellow)) 35%, white);
+  font-weight: 700;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.excerpt {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+.body .ui-btn--outline {
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .head {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .allLink,
+  .headCta {
+    margin-left: 0;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .meta {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .body :global(.ui-btn) {
+    align-self: center;
+  }
+}

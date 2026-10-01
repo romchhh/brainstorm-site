@@ -1,6 +1,6 @@
 .hero {
   padding: var(--space-5) 0 var(--space-4);
-  background: var(--color-surface);
+  background: var(--color-page-bg);
   min-height: calc(100dvh - var(--header-height));
   display: flex;
   align-items: center;
@@ -24,20 +24,28 @@
   align-items: start;
 }
 
-.center {
+.centerColumn {
   grid-area: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: 10px;
   position: relative;
   z-index: 2;
 }
 
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 10px;
+  width: 100%;
+}
+
 .title {
   margin: 0;
-  font-family: var(--font-hero);
+  font-family: var(--font-display);
   font-size: var(--text-hero);
   font-weight: 700;
   line-height: var(--leading-tight);
@@ -69,11 +77,11 @@
 .mark_green::after { background: var(--green); }
 
 .desc {
-  max-width: 640px;
+  max-width: 720px;
   margin: var(--space-5) auto 0;
-  font-size: var(--text-lg);
+  font-size: var(--text-hero-lead);
   line-height: var(--leading-normal);
-  color: var(--color-text);
+  color: var(--color-text-muted);
 }
 
 .actions {
@@ -161,28 +169,35 @@
 
 @media (max-width: 1100px) {
   .desc {
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
   }
 }
 
 @media (max-width: 900px) {
   .hero {
-    padding: var(--space-4) 0 var(--space-3);
+    padding: var(--space-5) 0 var(--space-6);
     min-height: auto;
     display: block;
   }
 
   .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     row-gap: var(--space-4);
+    padding-bottom: var(--space-2);
+  }
+
+  .centerColumn {
+    display: contents;
   }
 
   .center {
     order: 1;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
+    padding-top: calc(var(--space-6) + 8px);
   }
 
   .title {
@@ -191,42 +206,49 @@
 
   .desc {
     margin-top: var(--space-4);
-    font-size: var(--text-md);
-    text-align: left;
+    font-size: var(--text-lg);
+    text-align: center;
+    max-width: 36ch;
   }
 
   .stickerCritical {
-    order: 0;
-    width: 90px;
-    align-self: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 72px;
+    z-index: 3;
   }
 
   .topPhoto {
-    order: 2;
-    width: 88%;
-    align-self: flex-end;
+    order: 3;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    border-radius: var(--radius-md);
+    box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.07);
   }
 
   .bottomPhoto {
-    order: 3;
-    width: 88%;
-    align-self: flex-start;
+    order: 4;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    border-radius: var(--radius-md);
+    box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.05);
   }
 
   .actions {
-    order: 4;
+    order: 2;
     width: 100%;
-    justify-content: center;
-    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: stretch;
     margin-top: var(--space-2);
-    gap: var(--space-2);
+    gap: var(--space-3);
   }
 
   .actions :global(.ui-btn) {
-    flex: 1;
+    flex: none;
+    width: 100%;
     min-width: 0;
-    padding-left: var(--space-3);
-    padding-right: var(--space-3);
+    justify-content: center;
   }
 
   .waveLeft,

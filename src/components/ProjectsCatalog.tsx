@@ -2,84 +2,19 @@
 
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
+import type { CmsProject } from '@/data/cmsTypes';
 import styles from './ProjectsCatalog.module.css';
 
 type Status = 'all' | 'current' | 'done';
 type Theme = 'all' | 'ecology' | 'stem' | 'debates';
 
-type Project = {
-  id: string;
-  title: string;
-  desc: string;
-  period: string;
-  partners: string;
-  status: Exclude<Status, 'all'>;
-  theme: Exclude<Theme, 'all'>;
-  image: string;
+type Project = CmsProject;
+
+type Props = {
+  projects: Project[];
 };
 
-const projects: Project[] = [
-  {
-    id: '1',
-    title: 'Дебатний клуб «Голос»',
-    desc: 'Регулярні тренування з аргументації та публічних виступів для молоді 16–25.',
-    period: '2024 — дотепер',
-    partners: 'Місцеві освітні партнери',
-    status: 'current',
-    theme: 'debates',
-    image: '/about-lecture.jpg',
-  },
-  {
-    id: '2',
-    title: 'Екомоніторинг водойм',
-    desc: 'Польові дослідження, заміри якості води та просвітницькі акції з громадами.',
-    period: '2025 — дотепер',
-    partners: 'Екологічні ініціативи регіону',
-    status: 'current',
-    theme: 'ecology',
-    image: '/about-outdoor.jpg',
-  },
-  {
-    id: '3',
-    title: 'STEM Demo Day',
-    desc: 'Відкрита виставка учнівських інженерних рішень і робототехнічних проєктів.',
-    period: 'Серпень 2026',
-    partners: 'Школи та STEM-хаби',
-    status: 'done',
-    theme: 'stem',
-    image: '/about-desk.jpg',
-  },
-  {
-    id: '4',
-    title: 'Турнір публічних виступів',
-    desc: 'Відкритий турнір з публічних виступів для новачків і досвідчених спікерів.',
-    period: 'Жовтень 2025',
-    partners: 'Молодіжні центри',
-    status: 'done',
-    theme: 'debates',
-    image: '/about-photos.jpg',
-  },
-  {
-    id: '5',
-    title: 'Прибирання берегів',
-    desc: 'Серія волонтерських акцій із сортуванням відходів і фіксацією результатів.',
-    period: '2024 — 2025',
-    partners: 'Громадські організації',
-    status: 'done',
-    theme: 'ecology',
-    image: '/hero-kite.jpg',
-  },
-  {
-    id: '6',
-    title: 'Мейкер-лабораторія',
-    desc: 'Практичні STEM-майстерні, де допитливість перетворюється на інженерні навички.',
-    period: '2026 — дотепер',
-    partners: 'Партнери з освіти',
-    status: 'current',
-    theme: 'stem',
-    image: '/about/values/photos/value-lab.jpg',
-  },
-];
+const projectsDefault: Project[] = [];
 
 const statusFilters: { id: Status; label: string }[] = [
   { id: 'all', label: 'Усі' },
@@ -105,7 +40,7 @@ const statusLabel: Record<Exclude<Status, 'all'>, string> = {
   done: 'Реалізований',
 };
 
-export default function ProjectsCatalog() {
+export default function ProjectsCatalog({ projects = projectsDefault }: Props) {
   const [status, setStatus] = useState<Status>('all');
   const [theme, setTheme] = useState<Theme>('all');
 
@@ -157,7 +92,7 @@ export default function ProjectsCatalog() {
         <div className={styles.grid}>
           {filtered.map((project) => (
             <article key={project.id} className={styles.card}>
-              <div className={styles.media}>
+              <div className={`${styles.media} ui-card-photo`}>
                 <Image
                   src={project.image}
                   alt={project.title}

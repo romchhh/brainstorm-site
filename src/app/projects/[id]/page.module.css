@@ -30,10 +30,10 @@
 }
 
 .title {
-  font-family: var(--font-hero);
-  font-size: clamp(36px, 4vw, 56px);
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: var(--leading-tight);
   color: var(--black);
   margin-bottom: 12px;
 }
@@ -54,7 +54,7 @@
   border-radius: 28px;
   overflow: hidden;
   margin-bottom: 28px;
-  background: #f3f3f3;
+  background: var(--color-white);
 }
 
 .coverPhoto {

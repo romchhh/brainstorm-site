@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Ticker from '@/components/Ticker';
+import { cmsReportsByYear } from '@/lib/cms/content';
+import { getServerLocale } from '@/lib/localeServer';
+import TickerFromCms from '@/components/TickerFromCms';
 import PageHero, { HeroMark } from '@/components/PageHero';
 import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL } from '@/lib/seo';
 import styles from './page.module.css';
@@ -25,41 +27,11 @@ export const metadata: Metadata = buildPageMetadata({
   ],
 });
 
-const reportsByYear = [
-  {
-    year: '2026',
-    reports: [
-      {
-        title: 'Фінансово-творчий звіт ГО за I півріччя 2026',
-        file: '/reports/placeholder-report.pdf',
-      },
-    ],
-  },
-  {
-    year: '2025',
-    reports: [
-      {
-        title: 'Фінансово-творчий звіт ГО за 2025 рік',
-        file: '/reports/placeholder-report.pdf',
-      },
-      {
-        title: 'Звіт про реалізовані проєкти 2025',
-        file: '/reports/placeholder-report.pdf',
-      },
-    ],
-  },
-  {
-    year: '2024',
-    reports: [
-      {
-        title: 'Річний звіт ГО Brainstorm за 2024 рік',
-        file: '/reports/placeholder-report.pdf',
-      },
-    ],
-  },
-];
+export const revalidate = 300;
 
-export default function TransparencyPage() {
+export default async function TransparencyPage() {
+  const locale = await getServerLocale();
+  const reportsByYear = cmsReportsByYear(locale);
   const webPageJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -80,7 +52,7 @@ export default function TransparencyPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(webPageJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header />
+      <Header locale={locale} />
       <main className={styles.main}>
         <PageHero
           title={
@@ -100,13 +72,13 @@ export default function TransparencyPage() {
           accent="green"
         />
 
-        <Ticker />
+        <TickerFromCms locale={locale} />
 
         <section className={styles.section} id="reports" data-reveal="up">
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>Публічні звіти</h2>
             <p className={styles.sectionLead}>
-              Документи згруповані за роками. Після підключення адмін-панелі менеджер ГО зможе самостійно додавати нові PDF.
+              Документи згруповані за роками. Нові PDF додавайте в адмін-панелі в розділі «Звіти».
             </p>
 
             <div className={styles.years}>
@@ -115,7 +87,7 @@ export default function TransparencyPage() {
                   <h3 className={styles.yearTitle}>{group.year}</h3>
                   <div className={styles.reportList}>
                     {group.reports.map((report) => (
-                      <article key={report.title} className={styles.reportCard}>
+                      <article key={report.id} className={styles.reportCard}>
                         <div className={styles.reportIcon} aria-hidden>
                           <PdfIcon />
                         </div>
@@ -128,12 +100,13 @@ export default function TransparencyPage() {
                             href={report.file}
                             target="_blank"
                             rel="noreferrer"
-                            className={styles.btnOutline}
+                            className="ui-btn ui-btn--outline"
                           >
                             Переглянути
                           </a>
-                          <a href={report.file} download className={styles.btnPrimary}>
+                          <a href={report.file} download className="ui-btn ui-btn--primary">
                             Завантажити
+                            <span className="ui-btn__arrow" aria-hidden>→</span>
                           </a>
                         </div>
                       </article>
@@ -145,7 +118,7 @@ export default function TransparencyPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

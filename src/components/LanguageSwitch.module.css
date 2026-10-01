@@ -1,0 +1,86 @@
+.root {
+  position: relative;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 48px;
+  min-height: var(--btn-height);
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  border: var(--border-width-strong) solid var(--color-black);
+  background: var(--color-white);
+  color: #111;
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 3px 3px 0 rgba(17, 17, 17, 0.08);
+}
+
+.trigger:hover,
+.trigger[aria-expanded='true'] {
+  background: var(--color-yellow);
+}
+
+.triggerCode {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 188px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #fff;
+  border: 2px solid var(--color-black);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.12);
+  z-index: var(--z-dropdown);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.option:hover {
+  background: rgba(250, 217, 42, 0.25);
+}
+
+.optionActive {
+  background: rgba(250, 217, 42, 0.35);
+  font-weight: 700;
+}
+
+.optionCode {
+  flex-shrink: 0;
+  width: 28px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.optionName {
+  flex: 1;
+  font-size: 14px;
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--color-black);
+}

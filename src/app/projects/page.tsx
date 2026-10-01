@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Ticker from '@/components/Ticker';
+import TickerFromCms from '@/components/TickerFromCms';
 import PageHero, { HeroMark } from '@/components/PageHero';
 import ProjectsCatalog from '@/components/ProjectsCatalog';
 import ProjectsGallery from '@/components/ProjectsGallery';
+import HomeJoinBanner from '@/components/HomeJoinBanner';
+import { cmsGallery, cmsProjects } from '@/lib/cms/content';
+import { getServerLocale } from '@/lib/localeServer';
 import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL } from '@/lib/seo';
 import styles from './page.module.css';
 
@@ -28,7 +31,12 @@ export const metadata: Metadata = buildPageMetadata({
   ],
 });
 
-export default function ProjectsPage() {
+export const revalidate = 300;
+
+export default async function ProjectsPage() {
+  const locale = await getServerLocale();
+  const projects = cmsProjects(locale);
+  const gallery = cmsGallery(locale);
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -48,7 +56,7 @@ export default function ProjectsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(collectionJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header />
+      <Header locale={locale} />
       <main className={styles.main}>
         <PageHero
           title={
@@ -68,7 +76,7 @@ export default function ProjectsPage() {
           accent="pink"
         />
 
-        <Ticker />
+        <TickerFromCms locale={locale} />
 
         <section className={styles.previewSection} id="directions-block">
           <div className={styles.container}>
@@ -93,10 +101,11 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        <ProjectsCatalog />
-        <ProjectsGallery />
+        <ProjectsCatalog projects={projects} />
+        <ProjectsGallery albums={gallery} locale={locale} />
+        <HomeJoinBanner locale={locale} />
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

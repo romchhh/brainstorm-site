@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Ticker from '@/components/Ticker';
+import ContactForm from '@/components/ContactForm';
+import TickerFromCms from '@/components/TickerFromCms';
 import SocialIcon, { SOCIAL_LINKS } from '@/components/SocialIcon';
-import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL } from '@/lib/seo';
+import { cmsSettings } from '@/lib/cms/content';
+import { getServerLocale } from '@/lib/localeServer';
+import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL, toCanonical } from '@/lib/seo';
+import { pagePathForLocale } from '@/lib/localeServer';
 import styles from './page.module.css';
 
 const pageTitle = 'Контакти — Brainstorm | Звʼязок із командою';
@@ -25,20 +29,24 @@ export const metadata: Metadata = buildPageMetadata({
   ],
 });
 
-const contacts = [
-  { label: 'Email', value: 'info@brainstorm.org.ua', href: 'mailto:info@brainstorm.org.ua' },
-  { label: 'Телефон', value: '+380 44 123 4567', href: 'tel:+380441234567' },
-  { label: 'Локація', value: 'Україна', href: null },
-];
+export const revalidate = 300;
 
-export default function ContactsPage() {
+export default async function ContactsPage() {
+  const locale = await getServerLocale();
+  const settings = cmsSettings(locale);
+  const contacts = [
+    { label: 'Email', value: settings.email, href: `mailto:${settings.email}` },
+    { label: locale === 'en' ? 'Phone' : 'Телефон', value: settings.phone, href: `tel:${settings.phone.replace(/\s/g, '')}` },
+    { label: locale === 'en' ? 'Location' : 'Локація', value: settings.location, href: null },
+  ];
+
   const contactJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ContactPage',
     name: pageTitle,
     description: pageDescription,
-    url: `${SITE_URL}/contacts/`,
-    inLanguage: 'uk-UA',
+    url: toCanonical(pagePathForLocale('/contacts', locale)),
+    inLanguage: locale === 'en' ? 'en-US' : 'uk-UA',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     mainEntity: { '@id': `${SITE_URL}/#organization` },
   };
@@ -52,7 +60,7 @@ export default function ContactsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(contactJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header />
+      <Header locale={locale} />
       <main className={styles.main}>
         <section className={styles.hero} data-reveal="up">
           <div className={`${styles.container} ${styles.heroInner}`}>
@@ -65,7 +73,7 @@ export default function ContactsPage() {
           </div>
         </section>
 
-        <Ticker />
+        <TickerFromCms locale={locale} />
 
         <section className={styles.section} data-reveal="up">
           <div className={styles.container}>
@@ -106,32 +114,12 @@ export default function ContactsPage() {
                 </div>
               </div>
 
-              <form className={styles.form} action="#" method="post" data-reveal="up">
-                <h2 className={styles.sectionTitle}>Написати нам</h2>
-                <label className={styles.field}>
-                  <span>Імʼя</span>
-                  <input type="text" name="name" placeholder="Ваше імʼя" required />
-                </label>
-                <label className={styles.field}>
-                  <span>Email</span>
-                  <input type="email" name="email" placeholder="you@email.com" required />
-                </label>
-                <label className={styles.field}>
-                  <span>Повідомлення</span>
-                  <textarea name="message" rows={5} placeholder="Чим можемо допомогти?" required />
-                </label>
-                <button type="submit" className={styles.submit}>
-                  НАДІСЛАТИ
-                </button>
-                <p className={styles.formNote}>
-                  Форма поки демонстраційна. Після підключення бекенду/CRM листи надходитимуть на email команди.
-                </p>
-              </form>
+              <ContactForm locale={locale} />
             </div>
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

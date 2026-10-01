@@ -1,0 +1,51 @@
+.main {
+  padding-bottom: 64px;
+}
+
+.section {
+  padding: 48px 0 72px;
+}
+
+.container {
+  width: min(760px, calc(100% - var(--page-gutter-2)));
+  margin: 0 auto;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  margin-bottom: 16px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  line-height: 1.6;
+  color: var(--color-text-body);
+  margin-bottom: 28px;
+}
+
+.panel {
+  border: 2px solid var(--color-black);
+  border-radius: 22px;
+  padding: 22px 20px;
+  background: rgba(94, 214, 158, 0.12);
+}
+
+.panel h3 {
+  font-family: var(--font-display);
+  margin-bottom: 10px;
+}
+
+.panel ul {
+  margin-left: 18px;
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+
+.link {
+  font-weight: 700;
+}

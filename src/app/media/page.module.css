@@ -1,5 +1,5 @@
 .main {
-  background: var(--color-surface);
+  background: var(--color-page-bg);
 }
 
 .container {
@@ -10,10 +10,17 @@
 
 .section {
   padding: var(--section-pad-y) 0 var(--space-7);
+  border-top: var(--section-gap) solid var(--color-border);
+}
+
+.section:first-of-type {
+  border-top: none;
 }
 
 .scheduleSection {
-  padding: var(--space-7) 0 var(--space-10);
+  padding: var(--section-pad-y) 0 var(--space-10);
+  border-top: var(--section-gap) solid var(--color-border);
+  background: var(--color-page-bg);
 }
 
 .sectionTitle {
@@ -40,18 +47,25 @@
 }
 
 .newsCard {
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: var(--border-width-strong) solid var(--color-black);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--color-white);
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.newsCard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-soft), 6px 6px 0 rgba(17, 17, 17, 0.08);
 }
 
 .newsMedia {
   position: relative;
   aspect-ratio: 1.35 / 1;
-  background: var(--color-surface-soft);
+  background: var(--color-white);
 }
 
 .newsPhoto {
@@ -138,5 +152,20 @@
 @media (max-width: 900px) {
   .newsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .newsBody {
+    align-items: center;
+    text-align: center;
+  }
+
+  .newsMeta {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .newsLink {
+    justify-content: center;
+    margin-top: var(--space-2);
   }
 }

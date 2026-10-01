@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { toCanonical } from '@/lib/seo';
+import { SITE_URL, sitemapUrl } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -12,13 +12,28 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: 'GPTBot',
         allow: '/',
+        disallow: ['/admin/', '/api/'],
+      },
+      {
+        userAgent: 'ChatGPT-User',
+        allow: '/',
+        disallow: ['/admin/', '/api/'],
       },
       {
         userAgent: 'Google-Extended',
         allow: '/',
       },
+      {
+        userAgent: 'anthropic-ai',
+        allow: '/',
+        disallow: ['/admin/', '/api/'],
+      },
+      {
+        userAgent: 'Bytespider',
+        disallow: ['/admin/', '/api/'],
+      },
     ],
-    sitemap: toCanonical('/sitemap.xml'),
-    host: toCanonical('/').replace(/\/$/, ''),
+    sitemap: sitemapUrl(),
+    host: SITE_URL.replace(/\/$/, ''),
   };
 }

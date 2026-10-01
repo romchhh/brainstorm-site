@@ -1,45 +1,50 @@
 import Image from 'next/image';
+import type { Locale } from '@/i18n/locale';
+import { localizedPath } from '@/i18n/locale';
+import { cmsSettings } from '@/lib/cms/content';
 import SocialIcon, { SOCIAL_LINKS } from '@/components/SocialIcon';
 import styles from './Footer.module.css';
 
-const footerLinks = {
-  НАПРЯМКИ: [
-    { label: 'Дебати', href: '/projects' },
-    { label: 'Екологія', href: '/projects' },
-    { label: 'Робототехніка', href: '/projects' },
-    { label: 'Події', href: '/media' },
-  ],
-  ОРГАНІЗАЦІЯ: [
-    { label: 'Про нас', href: '/about' },
-    { label: 'Проєкти', href: '/projects' },
-    { label: 'Команда', href: '/about#community' },
-    { label: 'Прозорість', href: '/transparency' },
-    { label: 'Контакти', href: '/contacts' },
-  ],
-  КОНТАКТИ: [
-    { label: 'info@brainstorm.org.ua', href: 'mailto:info@brainstorm.org.ua' },
-    { label: '+380 44 123 4567', href: 'tel:+380441234567' },
-    { label: 'Україна', href: '/contacts' },
-  ],
+type Props = {
+  locale?: Locale;
 };
 
-export default function Footer() {
+export default function Footer({ locale = 'uk' }: Props) {
+  const settings = cmsSettings(locale);
+  const isEn = locale === 'en';
+
+  const footerLinks = {
+    [isEn ? 'FOCUS' : 'НАПРЯМКИ']: [
+      { label: isEn ? 'Debates' : 'Дебати', href: localizedPath('/projects', locale) },
+      { label: isEn ? 'Ecology' : 'Екологія', href: localizedPath('/projects', locale) },
+      { label: isEn ? 'Robotics' : 'Робототехніка', href: localizedPath('/projects', locale) },
+      { label: isEn ? 'Events' : 'Події', href: localizedPath('/media', locale) },
+    ],
+    [isEn ? 'ORGANIZATION' : 'ОРГАНІЗАЦІЯ']: [
+      { label: isEn ? 'About' : 'Про нас', href: localizedPath('/about', locale) },
+      { label: isEn ? 'Projects' : 'Проєкти', href: localizedPath('/projects', locale) },
+      { label: isEn ? 'Team' : 'Команда', href: `${localizedPath('/about', locale)}#community` },
+      { label: isEn ? 'Transparency' : 'Прозорість', href: localizedPath('/transparency', locale) },
+      { label: isEn ? 'Ecomonitoring' : 'Екомоніторинг', href: localizedPath('/ecomonitoring', locale) },
+      { label: isEn ? 'Contact' : 'Контакти', href: localizedPath('/contacts', locale) },
+    ],
+    [isEn ? 'CONTACT' : 'КОНТАКТИ']: [
+      { label: settings.email, href: `mailto:${settings.email}` },
+      { label: settings.phone, href: `tel:${settings.phone.replace(/\s/g, '')}` },
+      { label: settings.location, href: localizedPath('/contacts', locale) },
+    ],
+  };
+
   return (
-    <footer className={styles.footer} data-reveal="fade">
-      <div className={styles.container} data-reveal="up">
-        <div className={styles.brand} data-reveal="up">
+    <footer className={styles.footer}>
+      <div className={styles.panel}>
+        <div className={styles.container}>
+        <div className={styles.brand}>
           <div className={styles.logoWrap}>
-            <Image
-              src="/icons/brainstorm-logo-white.svg"
-              alt="Brainstorm"
-              width={186}
-              height={46}
-            />
+            <Image src="/icons/brainstorm-logo.svg" alt="Brainstorm" width={186} height={46} />
           </div>
-          <p className={styles.brandDesc}>
-            Молодіжна некомерційна організація, що створює простори для дискусій, екологічних та наукових ініціатив, а також громадської діяльності по всій Україні.
-          </p>
-          <div className={styles.socials} data-reveal="up">
+          <p className={styles.brandDesc}>{settings.metaDescription}</p>
+          <div className={styles.socials}>
             {SOCIAL_LINKS.map((s) => (
               <a
                 key={s.name}
@@ -56,7 +61,7 @@ export default function Footer() {
         </div>
 
         {Object.entries(footerLinks).map(([heading, links]) => (
-          <div key={heading} className={styles.col} data-reveal="up">
+          <div key={heading} className={styles.col}>
             <h4 className={styles.colHead}>{heading}</h4>
             {links.map((link) => (
               <a key={link.label} href={link.href} className={styles.colLink}>
@@ -67,22 +72,21 @@ export default function Footer() {
         ))}
       </div>
 
-      <div className={styles.bottomLine} data-reveal="fade">
-        <div className={styles.bottomInner} data-reveal="up">
-          <span className={styles.copy}>© 2026 Brainstorm. Усі права захищено.</span>
+      <div className={styles.bottomLine}>
+        <div className={styles.bottomInner}>
+          <span className={styles.copy}>
+            © 2026 {settings.brandName}. {isEn ? 'All rights reserved.' : 'Усі права захищено.'}
+          </span>
           <div className={styles.legal}>
-            <a href="/privacy-policy" className={styles.legalLink}>Політика конфіденційності</a>
-            <a href="/public-offer" className={styles.legalLink}>Публічна оферта</a>
-            <a
-              href="https://telebots.site/uk"
-              target="_blank"
-              rel="noreferrer"
-              className={styles.telebotsPill}
-            >
-              Сайт розроблено <span className={styles.telebotsBrand}>TeleBots</span>
+            <a href={localizedPath('/privacy-policy', locale)} className={styles.legalLink}>
+              {isEn ? 'Privacy policy' : 'Політика конфіденційності'}
+            </a>
+            <a href={localizedPath('/public-offer', locale)} className={styles.legalLink}>
+              {isEn ? 'Public offer' : 'Публічна оферта'}
             </a>
           </div>
         </div>
+      </div>
       </div>
     </footer>
   );

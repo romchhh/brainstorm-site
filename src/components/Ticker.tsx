@@ -1,9 +1,12 @@
 import styles from './Ticker.module.css';
 
-const items = ['СПІЛЬНОТА', 'ДЕБАТИ', 'ЕКОЛОГІЯ', 'НАУКА', 'ПУБЛІЧНІ ВИСТУПИ', 'РОБОТОТЕХНІКА', 'ГРОМАДА'];
+type Props = {
+  items: string[];
+};
 
-export default function Ticker() {
-  const repeated = [...items, ...items, ...items];
+export default function Ticker({ items }: Props) {
+  const list = items.length ? items : ['BRAINSTORM'];
+  const repeated = [...list, ...list, ...list];
   return (
     <div className={styles.ticker}>
       <div className={styles.track}>

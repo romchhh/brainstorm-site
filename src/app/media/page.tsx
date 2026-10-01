@@ -2,10 +2,23 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Ticker from '@/components/Ticker';
+import TickerFromCms from '@/components/TickerFromCms';
+import Link from 'next/link';
+import { cmsEvents, cmsNews } from '@/lib/cms/content';
+import { getServerLocale, pagePathForLocale } from '@/lib/localeServer';
 import PageHero, { HeroMark } from '@/components/PageHero';
 import EventsCalendar from '@/components/EventsCalendar';
-import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL } from '@/lib/seo';
+import HomeJoinBanner from '@/components/HomeJoinBanner';
+import {
+  buildPageMetadata,
+  breadcrumbJsonLd,
+  eventJsonLd,
+  itemListJsonLd,
+  jsonLdScript,
+  newsArticleJsonLd,
+  SITE_URL,
+  toCanonical,
+} from '@/lib/seo';
 import styles from './page.module.css';
 
 const pageTitle = 'Актуальні події — Brainstorm | Новини, анонси та календар';
@@ -28,68 +41,12 @@ export const metadata: Metadata = buildPageMetadata({
   ],
 });
 
-const news = [
-  {
-    title: 'Національний фінал дебатів: підсумки сезону',
-    date: '12.09.2026',
-    tag: 'Дебати',
-    tagColor: 'var(--yellow)',
-    excerpt:
-      'Понад 80 учасників з 12 міст зібралися на фіналі. Ділимося враженнями, переможцями та планами на наступний сезон.',
-    image: '/about-lecture.jpg',
-  },
-  {
-    title: 'Екодесант на річці: 1,2 тонни сміття зібрано',
-    date: '28.08.2026',
-    tag: 'Екологія',
-    tagColor: 'var(--green)',
-    excerpt:
-      'Волонтери Brainstorm провели прибирання берегової зони разом із місцевою громадою. Фотозвіт і результати моніторингу.',
-    image: '/about-outdoor.jpg',
-  },
-  {
-    title: 'STEM Demo Day: роботи, експерименти, ідеї',
-    date: '15.08.2026',
-    tag: 'Наука',
-    tagColor: 'var(--blue)',
-    excerpt:
-      'Молоді інженери презентували свої проєкти. Найкращі команди отримали менторську підтримку для розвитку ідей.',
-    image: '/about-desk.jpg',
-  },
-];
+export const revalidate = 300;
 
-const schedule = [
-  {
-    date: '2026-09-22',
-    title: 'Національний фінал дебатів',
-    place: 'Київ',
-    direction: 'Дебати' as const,
-    color: 'var(--yellow)',
-  },
-  {
-    date: '2026-10-02',
-    title: 'Екодесант: прибирання річки',
-    place: 'Черкаси',
-    direction: 'Екологія' as const,
-    color: 'var(--green)',
-  },
-  {
-    date: '2026-10-14',
-    title: 'STEM-майстерня та Demo Day',
-    place: 'Львів',
-    direction: 'Наука' as const,
-    color: 'var(--blue)',
-  },
-  {
-    date: '2026-10-25',
-    title: 'Відкритий турнір з публічних виступів',
-    place: 'Онлайн + Київ',
-    direction: 'Дебати' as const,
-    color: 'var(--yellow)',
-  },
-];
-
-export default function MediaPage() {
+export default async function MediaPage() {
+  const locale = await getServerLocale();
+  const news = cmsNews(locale);
+  const schedule = cmsEvents(locale);
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -105,11 +62,46 @@ export default function MediaPage() {
     { name: 'Актуальні події', path: '/media' },
   ]);
 
+  const newsListJsonLd = itemListJsonLd(
+    news.map((item) => ({
+      name: item.title,
+      url: toCanonical('/media'),
+    })),
+  );
+
+  const eventsJsonLd = schedule.slice(0, 10).map((event) =>
+    eventJsonLd({
+      title: event.title,
+      date: event.date,
+      place: event.place,
+      description: `${event.direction} · ${event.place}`,
+    }),
+  );
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(collectionJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(newsListJsonLd)} />
+      {news.slice(0, 3).map((item) => (
+        <script
+          key={item.id}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={jsonLdScript(
+            newsArticleJsonLd({
+              title: item.title,
+              excerpt: item.excerpt,
+              date: item.date,
+              image: item.image,
+              path: '/media',
+            }),
+          )}
+        />
+      ))}
+      {eventsJsonLd.map((data, index) => (
+        <script key={index} type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(data)} />
+      ))}
+      <Header locale={locale} />
       <main className={styles.main}>
         <PageHero
           title={
@@ -129,19 +121,21 @@ export default function MediaPage() {
           accent="yellow"
         />
 
-        <Ticker />
+        <TickerFromCms locale={locale} />
 
         <section className={styles.section} id="news" data-reveal="up">
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>Новини та анонси</h2>
             <p className={styles.sectionLead}>
-              Останні публікації зі спільноти. Повноцінний блог з адмін-панеллю підключається на наступному етапі.
+              {locale === 'en'
+                ? 'Latest posts from the community. Open any article for the full story.'
+                : 'Останні публікації зі спільноти. Відкрийте статтю для повного тексту.'}
             </p>
 
             <div className={styles.newsGrid}>
               {news.map((item) => (
                 <article key={item.title} className={styles.newsCard} data-reveal="up">
-                  <div className={styles.newsMedia}>
+                  <div className={`${styles.newsMedia} ui-card-photo`}>
                     <Image src={item.image} alt={item.title} fill className={styles.newsPhoto} sizes="(max-width: 900px) 100vw, 33vw" />
                   </div>
                   <div className={styles.newsBody}>
@@ -153,12 +147,12 @@ export default function MediaPage() {
                     </div>
                     <h3 className={styles.newsTitle}>{item.title}</h3>
                     <p className={styles.newsExcerpt}>{item.excerpt}</p>
-                    <a href="#" className={styles.newsLink}>
-                      Читати далі
+                    <Link href={pagePathForLocale(`/media/${item.id}`, locale)} className={styles.newsLink}>
+                      {locale === 'en' ? 'Read more' : 'Читати далі'}
                       <span className={styles.newsLinkIcon}>
                         <ArrowIcon />
                       </span>
-                    </a>
+                    </Link>
                   </div>
                 </article>
               ))}
@@ -173,11 +167,12 @@ export default function MediaPage() {
               Оберіть день у календарі. Колір позначки відповідає напрямку діяльності.
             </p>
 
-            <EventsCalendar events={schedule} />
+            <EventsCalendar events={schedule} locale={locale} />
           </div>
         </section>
+        <HomeJoinBanner locale={locale} />
       </main>
-      <Footer />
+      <Footer locale={locale} />
     </>
   );
 }

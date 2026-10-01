@@ -50,10 +50,10 @@
 
 .heroDesc {
   margin: var(--space-5) auto 0;
-  max-width: 680px;
-  font-size: var(--text-xl);
+  max-width: 720px;
+  font-size: var(--text-hero-lead);
   line-height: var(--leading-normal);
-  color: var(--color-text);
+  color: var(--color-text-muted);
 }
 
 .section {
@@ -140,10 +140,11 @@
 }
 
 .form {
-  border: var(--border-width) solid var(--color-border);
-  border-radius: var(--radius-lg);
+  border: var(--border-width-strong) solid var(--color-black);
+  border-radius: var(--radius-md);
   padding: var(--space-6);
-  background: var(--color-surface-muted);
+  background: var(--color-white);
+  box-shadow: var(--shadow-soft);
 }
 
 .field {
@@ -202,11 +203,13 @@
 @media (max-width: 900px) {
   .hero {
     min-height: auto;
-    padding: var(--space-6) 0 var(--space-5);
+    padding: var(--space-6) 0 var(--space-6);
   }
 
   .heroInner {
     min-height: auto;
+    padding: var(--space-2) 0;
+    gap: var(--space-4);
   }
 
   .heroTitle {
@@ -214,7 +217,13 @@
   }
 
   .heroDesc {
-    font-size: var(--text-base);
+    font-size: var(--text-lg);
+    max-width: 34ch;
+  }
+
+  .heroAccent::after {
+    height: 14px;
+    bottom: 4px;
   }
 
   .grid {

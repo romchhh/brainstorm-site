@@ -1,19 +1,19 @@
-'use client';
+import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+import { buildPageMetadata } from '@/lib/seo';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+export const revalidate = 300;
+
+export const metadata: Metadata = {
+  ...buildPageMetadata({
+    title: 'Календар подій — Brainstorm',
+    description: 'Актуальні події Brainstorm: дебати, екологія, STEM. Перейдіть до календаря та реєстрації.',
+    path: '/media',
+    keywords: ['календар подій Brainstorm', 'анонси подій', 'реєстрація на події'],
+  }),
+  robots: { index: false, follow: true },
+};
 
 export default function EventsRedirectPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/media/');
-  }, [router]);
-
-  return (
-    <main style={{ padding: '48px 24px', textAlign: 'center' }}>
-      <p>Переходимо до розділу «Актуальні події»…</p>
-      <a href="/media/">Відкрити /media</a>
-    </main>
-  );
+  redirect('/media/');
 }

@@ -55,7 +55,7 @@ export default function Events() {
         <div className={styles.grid} data-reveal="up">
           {events.map((event, i) => (
             <article key={i} className={`${styles.card} ${styles[event.variant]}`} data-reveal="up">
-              <div className={styles.media}>
+              <div className={`${styles.media} ui-card-photo ui-card-photo--lg`}>
                 <Image
                   src={event.image}
                   alt={event.imageAlt}

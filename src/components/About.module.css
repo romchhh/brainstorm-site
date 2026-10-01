@@ -1,6 +1,7 @@
 .about {
-  padding: 72px 0 80px;
-  background: #fff;
+  padding: var(--section-pad-y) 0;
+  background: var(--color-page-bg);
+  border-top: var(--section-gap) solid var(--color-border);
 }
 
 .container {
@@ -39,9 +40,9 @@
 
 .heading {
   font-family: var(--font-display);
-  font-size: clamp(34px, 3.8vw, 56px);
+  font-size: var(--text-section);
   font-weight: 700;
-  line-height: 1.08;
+  line-height: var(--leading-tight);
   letter-spacing: 0;
   color: var(--black);
   margin-bottom: 28px;
@@ -58,9 +59,9 @@
 
 .text {
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.65;
-  color: #555;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
   margin-bottom: 16px;
 }
 
@@ -68,57 +69,8 @@
   margin-bottom: 0;
 }
 
-.btnDesktop,
-.btnMobile {
+.btnDesktop {
   display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--black);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 14px 18px 14px 22px;
-  border-radius: 999px;
-  transition: background 0.2s;
-}
-
-.btnDesktop:hover,
-.btnMobile:hover {
-  background: #333;
-}
-
-.btnIcon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid #fff;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.2s;
-}
-
-.btnIcon svg {
-  transition: transform 0.2s;
-}
-
-.btnDesktop:hover .btnIcon,
-.btnDesktop:active .btnIcon,
-.btnMobile:hover .btnIcon,
-.btnMobile:active .btnIcon {
-  transform: translate(4px, 4px);
-}
-
-.btnDesktop:hover .btnIcon svg,
-.btnDesktop:active .btnIcon svg,
-.btnMobile:hover .btnIcon svg,
-.btnMobile:active .btnIcon svg {
-  transform: rotate(18deg);
 }
 
 .btnMobile {
@@ -166,6 +118,9 @@
 
   .content {
     order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
@@ -175,7 +130,7 @@
   }
 
   .heading {
-    font-size: clamp(28px, 8vw, 40px);
+    font-size: var(--text-section);
     margin-bottom: 20px;
   }
 
@@ -196,6 +151,8 @@
     order: 3;
     display: inline-flex;
     justify-self: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .grid {

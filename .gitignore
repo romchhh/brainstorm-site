@@ -1,6 +1,9 @@
 node_modules
 .next
 out
+cms-data/*.sqlite
+cms-data/*.sqlite-*
+cms-data/uploads
 *.tsbuildinfo
 .env
 .env.local

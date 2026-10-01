@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { CtaArrow } from '@/components/CtaPanel';
 import styles from './PageHero.module.css';
 
 type Accent = 'pink' | 'yellow' | 'blue' | 'green';
@@ -63,19 +64,16 @@ export default function PageHero({
           />
         </div>
 
-        <div className={styles.center}>
-          <h1 className={styles.title}>{title}</h1>
-
-          <p className={styles.desc}>{description}</p>
+        <div className={styles.centerColumn}>
+          <div className={styles.center}>
+            <h1 className={styles.title}>{title}</h1>
+            <p className={styles.desc}>{description}</p>
+          </div>
 
           <div className={styles.actions}>
             <a href={primary.href} className="ui-btn ui-btn--primary">
               {primary.label}
-              {primary.withArrow !== false ? (
-                <span className="ui-btn__icon">
-                  <ArrowIcon />
-                </span>
-              ) : null}
+              {primary.withArrow !== false ? <CtaArrow /> : null}
             </a>
             {secondary ? (
               <a href={secondary.href} className="ui-btn ui-btn--outline">
@@ -122,18 +120,4 @@ export default function PageHero({
 
 export function HeroMark({ children, tone = 'pink' }: { children: React.ReactNode; tone?: Accent }) {
   return <em className={`${styles.mark} ${styles[`mark_${tone}`]}`}>{children}</em>;
-}
-
-function ArrowIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M3 13L13 3M13 3H5M13 3V11"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
 }

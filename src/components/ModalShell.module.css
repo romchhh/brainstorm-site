@@ -1,0 +1,67 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  isolation: isolate;
+}
+
+.rootOpen {
+  animation: modalBackdropIn var(--transition-fast) ease-out both;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(17, 17, 17, 0.52);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 920px);
+  max-height: min(92vh, 900px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  outline: none;
+}
+
+.panelOpen {
+  animation: modalPanelIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rootOpen,
+  .panelOpen {
+    animation: none;
+  }
+}

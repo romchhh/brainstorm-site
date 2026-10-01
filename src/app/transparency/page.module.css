@@ -54,17 +54,25 @@
   grid-template-columns: auto 1fr auto;
   gap: var(--space-5);
   align-items: center;
-  padding: var(--space-4) var(--space-5);
-  border: var(--border-width) solid var(--color-border);
+  padding: var(--space-5) var(--space-6);
+  border: var(--border-width-strong) solid var(--color-black);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
+  background: var(--color-white);
+  box-shadow: 4px 4px 0 rgba(17, 17, 17, 0.06);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.reportCard:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 rgba(17, 17, 17, 0.08);
 }
 
 .reportIcon {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: var(--radius-sm);
-  background: var(--color-surface-soft);
+  background: rgba(250, 217, 42, 0.4);
+  border: var(--border-width-strong) solid var(--color-black);
   display: inline-flex;
   align-items: center;
   justify-content: center;

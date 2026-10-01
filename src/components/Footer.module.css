@@ -1,7 +1,17 @@
 .footer {
-  background: #131313;
-  color: #fff;
-  padding: 58px 0 0;
+  background: var(--color-page-bg);
+  color: var(--color-black);
+  padding: 0;
+  overflow: visible;
+}
+
+.panel {
+  background: var(--color-footer-panel);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  border-top: var(--border-width-strong) solid var(--color-border);
+  padding: 58px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+  overflow: hidden;
 }
 
 .container {
@@ -21,7 +31,7 @@
 .brandDesc {
   font-size: 16px;
   line-height: 1.55;
-  color: #fff;
+  color: var(--color-text-muted);
   margin-bottom: 22px;
   max-width: 360px;
 }
@@ -34,18 +44,22 @@
 .social {
   width: 48px;
   height: 48px;
-  border: var(--border-width-strong) solid rgba(255,255,255,0.7);
+  border: var(--border-width-strong) solid var(--color-black);
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  color: var(--color-black);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background var(--transition-fast);
 }
 
 .social:hover {
-  border-color: #fff;
-  color: #fff;
+  border-color: var(--pink);
+  color: var(--pink);
+  background: rgba(243, 105, 159, 0.06);
 }
 
 .col {
@@ -59,28 +73,26 @@
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.5);
+  color: var(--color-text-subtle);
   margin-bottom: 6px;
 }
 
 .colLink {
   font-size: 16px;
-  color: #fff;
+  color: var(--color-black);
   line-height: 1.4;
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
 }
 
-.colLink:hover { color: #fff; }
+.colLink:hover {
+  color: var(--pink);
+}
 
 @media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Згрупувати мобільний футер по рядках:
-     1) бренд на всю ширину
-     2) напрями/організація в 2 колонки
-     3) контакти на всю ширину */
   .container > :nth-child(1) {
     grid-column: 1 / -1;
   }
@@ -99,7 +111,7 @@
 }
 
 @media (max-width: 480px) {
-  .footer {
+  .panel {
     padding-top: 44px;
   }
 
@@ -115,13 +127,13 @@
 
 .bottomLine {
   margin-top: 34px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: var(--border-width) solid var(--color-border);
 }
 
 .bottomInner {
   max-width: var(--page-max);
   margin: 0 auto;
-  padding: 14px var(--page-gutter) 16px;
+  padding: 14px var(--page-gutter) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,7 +142,7 @@
 
 .copy {
   font-size: 14px;
-  color: rgba(255,255,255,0.5);
+  color: var(--color-text-subtle);
 }
 
 .legal {
@@ -141,33 +153,33 @@
 
 .legalLink {
   font-size: 14px;
-  color: rgba(255,255,255,0.58);
-  transition: color 0.2s;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
 }
 
 .legalLink:hover {
-  color: #fff;
+  color: var(--pink);
 }
 
 .telebotsPill {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  color: var(--color-text-muted);
+  border: var(--border-width) solid var(--color-border);
   border-radius: 999px;
   padding: 8px 12px;
   line-height: 1;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
   white-space: nowrap;
 }
 
 .telebotsPill:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.72);
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-black);
+  border-color: var(--color-black);
+  background: var(--color-surface);
 }
 
 .telebotsBrand {
-  color: #fff;
+  color: var(--color-black);
   font-weight: 700;
 }
 
