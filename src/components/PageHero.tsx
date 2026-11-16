@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import { CtaArrow } from '@/components/CtaPanel';
+import { CtaArrow } from '@/components/CtaArrow';
+import DecorMark from '@/components/DecorMark';
 import styles from './PageHero.module.css';
 
 type Accent = 'pink' | 'yellow' | 'blue' | 'green';
@@ -8,6 +9,7 @@ type Cta = {
   href: string;
   label: string;
   withArrow?: boolean;
+  external?: boolean;
 };
 
 type Props = {
@@ -36,23 +38,8 @@ export default function PageHero({
   return (
     <section className={styles.hero} data-reveal="fade">
       <div className={styles.container}>
-        <Image
-          src="/icons/sticker-critical.svg"
-          alt=""
-          width={121}
-          height={104}
-          className={styles.stickerCritical}
-          aria-hidden
-        />
-
-        <Image
-          src="/icons/wave-pink.svg"
-          alt=""
-          width={74}
-          height={16}
-          className={styles.waveLeft}
-          aria-hidden
-        />
+        <DecorMark tone="yellow" variant="arc" className={styles.stickerCritical} width={72} height={40} />
+        <DecorMark tone="pink" className={styles.waveLeft} width={74} height={16} />
 
         <div className={styles.bottomPhoto}>
           <Image
@@ -71,12 +58,20 @@ export default function PageHero({
           </div>
 
           <div className={styles.actions}>
-            <a href={primary.href} className="ui-btn ui-btn--primary">
+            <a
+              href={primary.href}
+              className="ui-btn ui-btn--primary"
+              {...(primary.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+            >
               {primary.label}
               {primary.withArrow !== false ? <CtaArrow /> : null}
             </a>
             {secondary ? (
-              <a href={secondary.href} className="ui-btn ui-btn--outline">
+              <a
+                href={secondary.href}
+                className="ui-btn ui-btn--outline"
+                {...(secondary.external ? { target: '_blank', rel: 'noreferrer' } : {})}
+              >
                 {secondary.label}
               </a>
             ) : null}
@@ -94,23 +89,8 @@ export default function PageHero({
           />
         </div>
 
-        <Image
-          src="/icons/sticker-argument.svg"
-          alt=""
-          width={123}
-          height={93}
-          className={styles.stickerArgument}
-          aria-hidden
-        />
-
-        <Image
-          src="/icons/wave-pink.svg"
-          alt=""
-          width={74}
-          height={16}
-          className={styles.waveRight}
-          aria-hidden
-        />
+        <DecorMark tone="blue" className={styles.stickerArgument} width={88} height={20} />
+        <DecorMark tone="pink" className={styles.waveRight} width={74} height={16} />
 
         <span className={`${styles.accentBlob} ${styles[accent]}`} aria-hidden />
       </div>

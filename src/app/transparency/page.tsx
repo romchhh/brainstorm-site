@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { cmsReportsByYear } from '@/lib/cms/content';
+import { cmsReportsByYear, cmsSettings } from '@/lib/cms/content';
 import { getServerLocale } from '@/lib/localeServer';
 import TickerFromCms from '@/components/TickerFromCms';
 import PageHero, { HeroMark } from '@/components/PageHero';
@@ -31,6 +31,7 @@ export const revalidate = 300;
 
 export default async function TransparencyPage() {
   const locale = await getServerLocale();
+  const settings = cmsSettings(locale);
   const reportsByYear = cmsReportsByYear(locale);
   const webPageJsonLd = {
     '@context': 'https://schema.org',
@@ -52,7 +53,7 @@ export default async function TransparencyPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(webPageJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <PageHero
           title={

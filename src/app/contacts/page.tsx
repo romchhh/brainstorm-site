@@ -60,7 +60,7 @@ export default async function ContactsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(contactJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <section className={styles.hero} data-reveal="up">
           <div className={`${styles.container} ${styles.heroInner}`}>
@@ -75,7 +75,7 @@ export default async function ContactsPage() {
 
         <TickerFromCms locale={locale} />
 
-        <section className={styles.section} data-reveal="up">
+        <section className={styles.section} id="write" data-reveal="up">
           <div className={styles.container}>
             <div className={styles.grid}>
               <div className={styles.info}>

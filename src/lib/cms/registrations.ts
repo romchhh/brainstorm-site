@@ -23,6 +23,7 @@ export function normalizeEvent(event: CmsEvent): CmsEvent {
     latitude: parseCoord(event.latitude as unknown),
     longitude: parseCoord(event.longitude as unknown),
     onlineUrl: event.onlineUrl?.trim() || undefined,
+    registrationUrl: event.registrationUrl?.trim() || undefined,
   };
 }
 

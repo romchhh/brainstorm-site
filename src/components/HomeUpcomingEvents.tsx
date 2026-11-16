@@ -5,7 +5,7 @@ import type { Locale } from '@/i18n/locale';
 import { localizedPath } from '@/i18n/locale';
 import { getMessages } from '@/i18n/messages';
 import { formatEventDateTime } from '@/lib/datetime';
-import { CtaArrow } from '@/components/CtaPanel';
+import { CtaArrow } from '@/components/CtaArrow';
 import styles from './HomeUpcomingEvents.module.css';
 
 type Props = {
@@ -22,7 +22,10 @@ function eventCover(event: CmsEvent) {
 export default function HomeUpcomingEvents({ events, locale }: Props) {
   const m = getMessages(locale);
   const todayKey = new Date().toISOString().slice(0, 10);
-  const upcoming = events.filter((e) => e.date >= todayKey).slice(0, 4);
+  const upcoming = events
+    .filter((e) => e.date >= todayKey)
+    .sort((a, b) => a.date.localeCompare(b.date) || (a.startTime ?? '').localeCompare(b.startTime ?? ''))
+    .slice(0, 3);
 
   return (
     <section className={styles.section} id="upcoming-events" data-reveal="fade">
@@ -32,6 +35,13 @@ export default function HomeUpcomingEvents({ events, locale }: Props) {
             {m.home.eventsTitle} <em className={styles.accent}>{m.home.eventsAccent}</em>
           </h2>
           <p className={styles.lead}>{m.home.eventsLead}</p>
+          <Link
+            href={`${localizedPath('/media', locale)}#schedule`}
+            className={`ui-btn ui-btn--primary ${styles.headCta}`}
+          >
+            {m.cta.calendar}
+            <CtaArrow />
+          </Link>
         </div>
 
         <div className={styles.list}>
@@ -65,13 +75,6 @@ export default function HomeUpcomingEvents({ events, locale }: Props) {
               </Link>
             </article>
           ))}
-        </div>
-
-        <div className={styles.footerCta}>
-          <Link href={`${localizedPath('/media', locale)}#schedule`} className="ui-btn ui-btn--outline">
-            {m.home.allEvents}
-            <CtaArrow />
-          </Link>
         </div>
       </div>
     </section>

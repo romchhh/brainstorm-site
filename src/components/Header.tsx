@@ -10,11 +10,19 @@ import { getMessages } from '@/i18n/messages';
 import { usePublicPathname } from '@/hooks/usePublicPathname';
 import styles from './Header.module.css';
 
-export default function Header({ locale: localeProp }: { locale?: Locale }) {
+export default function Header({
+  locale: localeProp,
+  donateUrl,
+}: {
+  locale?: Locale;
+  donateUrl?: string;
+}) {
   const publicPath = usePublicPathname();
   const locale = localeProp ?? getLocaleFromPathname(publicPath);
   const m = getMessages(locale);
   const [menuOpen, setMenuOpen] = useState(false);
+  const supportHref = donateUrl?.trim() || localePrefix(locale, '/contacts');
+  const supportExternal = Boolean(donateUrl?.trim());
 
   const navLinks = [
     { label: m.nav.home, href: localePrefix(locale, '/') },
@@ -62,8 +70,12 @@ export default function Header({ locale: localeProp }: { locale?: Locale }) {
           <div className={styles.desktopLang}>
             <LanguageSwitch locale={locale} />
           </div>
-          <a href={localePrefix(locale, '/contacts')} className={styles.cta}>
-            {m.cta.join}
+          <a
+            href={supportHref}
+            className={styles.cta}
+            {...(supportExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
+          >
+            {m.cta.support}
             <span className={styles.arrowCircle}>
               <svg className={styles.arrowIcon} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -102,8 +114,13 @@ export default function Header({ locale: localeProp }: { locale?: Locale }) {
             {link.label}
           </a>
         ))}
-        <a href={localePrefix(locale, '/contacts')} className={styles.mobileCta} onClick={closeMenu}>
-          {m.cta.join}
+        <a
+          href={supportHref}
+          className={styles.mobileCta}
+          onClick={closeMenu}
+          {...(supportExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
+        >
+          {m.cta.support}
           <span className={styles.arrowCircle}>
             <svg className={styles.arrowIcon} width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
               <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

@@ -3,9 +3,13 @@ import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TickerFromCms from '@/components/TickerFromCms';
-import { cmsReviews, cmsSettings, cmsTeam } from '@/lib/cms/content';
-import ImpactCharts from '@/components/ImpactCharts';
+import AboutFeaturedProjects from '@/components/AboutFeaturedProjects';
+import DecorMark from '@/components/DecorMark';
+import CtaPanel from '@/components/CtaPanel';
+import { cmsFeaturedProjects, cmsReviews, cmsSettings, cmsTeam } from '@/lib/cms/content';
 import { getServerLocale } from '@/lib/localeServer';
+import { localizedPath } from '@/i18n/locale';
+import { getMessages } from '@/i18n/messages';
 import {
   SITE_URL,
   toCanonical,
@@ -43,6 +47,9 @@ export const revalidate = 300;
 export default async function AboutPage() {
   const locale = await getServerLocale();
   const settings = cmsSettings(locale);
+  const m = getMessages(locale);
+  const featured = cmsFeaturedProjects(locale, 6);
+  const donateUrl = settings.donateUrl?.trim() || '';
 
   const aboutPageJsonLd = {
     '@context': 'https://schema.org',
@@ -86,32 +93,7 @@ export default async function AboutPage() {
       tone: styles.cardBlue,
     },
   ] as const;
-  const activities = [
-    {
-      idx: '01',
-      title: 'Дебати та публічні виступи',
-      text: 'Допомагаємо молоді впевнено висловлювати власні думки, аргументувати позицію та брати участь у суспільних дискусіях.',
-      tone: styles.activityYellow,
-    },
-    {
-      idx: '02',
-      title: 'Екологічні ініціативи',
-      text: 'Організовуємо екопроєкти, просвітницькі кампанії та заходи, що формують відповідальне ставлення до довкілля.',
-      tone: styles.activityGreen,
-    },
-    {
-      idx: '03',
-      title: 'Наука та робототехніка',
-      text: 'Популяризуємо STEM, сучасні технології та практичне навчання через воркшопи, лабораторії й освітні проєкти.',
-      tone: styles.activityBlue,
-    },
-    {
-      idx: '04',
-      title: 'Молодіжна спільнота',
-      text: 'Створюємо безпечний простір для знайомств, спільних ідей, волонтерства та розвитку.',
-      tone: styles.activityPink,
-    },
-  ] as const;
+
   const teamMembers = cmsTeam(locale);
   const reviewItems = cmsReviews(locale);
 
@@ -150,6 +132,9 @@ export default async function AboutPage() {
     author: review.author,
   }));
 
+  const contactsWrite = `${localizedPath('/contacts', locale)}#write`;
+  const transparencyHref = localizedPath('/transparency', locale);
+
   return (
     <>
       <script
@@ -160,27 +145,12 @@ export default async function AboutPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)}
       />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={donateUrl} />
       <main>
         <section className={styles.hero} data-reveal="fade">
           <div className={styles.container}>
-            <Image
-              src="/icons/sticker-critical.svg"
-              alt=""
-              width={121}
-              height={104}
-              className={styles.stickerCritical}
-              aria-hidden
-            />
-
-            <Image
-              src="/icons/wave-pink.svg"
-              alt=""
-              width={74}
-              height={16}
-              className={styles.waveLeft}
-              aria-hidden
-            />
+            <DecorMark tone="yellow" variant="arc" className={styles.stickerCritical} width={72} height={40} />
+            <DecorMark tone="pink" className={styles.waveLeft} width={74} height={16} />
 
             <div className={styles.bottomPhoto}>
               <Image
@@ -208,15 +178,24 @@ export default async function AboutPage() {
                   Ми реалізуємо програми у сферах дебатів, екології та робототехніки, адже переконані:
                   наступне покоління не повинно чекати на зміни.
                 </p>
+
+                <p className={styles.mission}>
+                  <span className={styles.missionLabel}>{m.aboutPage.missionLabel}</span>
+                  {locale === 'en'
+                    ? 'Empower young people to think critically and act together for their communities.'
+                    : 'Давати молоді силу критично мислити і діяти разом заради своїх спільнот.'}
+                </p>
               </div>
 
               <div className={styles.actions}>
-                <a href="/#join" className="ui-btn ui-btn--primary">
-                  ПІДТРИМАТИ
-                  <span className="ui-btn__arrow" aria-hidden>→</span>
+                <a href={contactsWrite} className="ui-btn ui-btn--primary">
+                  {m.cta.collaborate}
+                  <span className="ui-btn__arrow" aria-hidden>
+                    →
+                  </span>
                 </a>
-                <a href="/#directions" className="ui-btn ui-btn--outline">
-                  НАШІ НАПРЯМКИ
+                <a href={transparencyHref} className="ui-btn ui-btn--outline">
+                  {m.cta.transparency}
                 </a>
               </div>
             </div>
@@ -232,26 +211,12 @@ export default async function AboutPage() {
               />
             </div>
 
-            <Image
-              src="/icons/sticker-argument.svg"
-              alt=""
-              width={123}
-              height={93}
-              className={styles.stickerArgument}
-              aria-hidden
-            />
-
-            <Image
-              src="/icons/wave-pink.svg"
-              alt=""
-              width={74}
-              height={16}
-              className={styles.waveRight}
-              aria-hidden
-            />
+            <DecorMark tone="blue" className={styles.stickerArgument} width={88} height={20} />
+            <DecorMark tone="pink" className={styles.waveRight} width={74} height={16} />
           </div>
         </section>
-        <ImpactCharts settings={settings} locale={locale} />
+
+        <AboutFeaturedProjects projects={featured} locale={locale} />
         <TickerFromCms locale={locale} />
 
         <section className={styles.valuesSection} data-reveal="up">
@@ -324,52 +289,23 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        <section className={styles.activitiesSection} data-reveal="up">
-          <div className={styles.activitiesContainer}>
-            <div className={styles.activitiesTop}>
-              <h2 className={styles.activitiesTitle}>Чим ми займаємося</h2>
-              <a href="/#join" className={styles.activitiesBtn}>
-                ДОЛУЧИТИСЯ
-                <span className={styles.activitiesBtnIcon}>
-                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 13L13 3M13 3H5M13 3V11" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </span>
-              </a>
-            </div>
-
-            <div className={styles.activitiesList}>
-              {activities.map((item) => (
-                <article key={item.idx} className={styles.activityRow}>
-                  <span className={styles.activityIndex}>{item.idx}</span>
-                  <div className={styles.activityContent}>
-                    <h3 className={`${styles.activityHeading} ${item.tone}`}>
-                      <span className={styles.activityDot} />
-                      {item.title}
-                    </h3>
-                    <p className={styles.activityText}>{item.text}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className={styles.communitySection} id="community" data-reveal="right">
           <div className={styles.communityContainer}>
             <div className={styles.communityHead}>
               <h2 className={styles.communityTitle}>
                 Наша <span className={styles.communityAccent}>команда</span>
               </h2>
-              <Image src="/icons/wave-pink.svg" alt="" width={74} height={16} className={styles.communityWave} aria-hidden />
-              <Image src="/icons/sticker-never-argue.svg" alt="" width={183} height={84} className={styles.communitySticker} aria-hidden />
+              <DecorMark tone="pink" className={styles.communityWave} width={74} height={16} />
+              <DecorMark tone="yellow" variant="arc" className={styles.communitySticker} width={88} height={48} />
             </div>
             <p className={styles.communityDesc}>
               Люди, які запускають програми, менторять учасників і тримають спільноту живою. Фото однакові за форматом — їх легко оновлювати після підключення CMS.
             </p>
 
             <div className={styles.memberSlider}>
-              <button className={styles.slideArrow} aria-label="Назад">←</button>
+              <button className={styles.slideArrow} aria-label="Назад">
+                ←
+              </button>
               <div className={styles.memberGrid}>
                 {teamCards.map((card) => (
                   <article key={card.name} className={styles.memberCard}>
@@ -382,19 +318,16 @@ export default async function AboutPage() {
                       <span className={`${styles.roleBadge} ${card.tone}`}>{card.role}</span>
                       <h3 className={styles.memberName}>{card.name}</h3>
                       <p className={styles.memberText}>{card.text}</p>
-                      <a
-                        href={card.linkedin}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.memberLink}
-                      >
+                      <a href={card.linkedin} target="_blank" rel="noreferrer" className={styles.memberLink}>
                         LinkedIn
                       </a>
                     </div>
                   </article>
                 ))}
               </div>
-              <button className={styles.slideArrow} aria-label="Далі">→</button>
+              <button className={styles.slideArrow} aria-label="Далі">
+                →
+              </button>
             </div>
           </div>
         </section>
@@ -406,7 +339,7 @@ export default async function AboutPage() {
                 Відгуки людей, які <br />
                 <span className={styles.reviewsAccent}>з нами давно</span>
               </h2>
-              <Image src="/icons/sticker-argument.svg" alt="" width={123} height={93} className={styles.reviewsSticker} aria-hidden />
+              <DecorMark tone="blue" className={styles.reviewsSticker} width={88} height={20} />
             </div>
 
             <div className={styles.reviewsGrid}>
@@ -426,27 +359,33 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        <section className={styles.joinSection} data-reveal="scale">
-          <div className={styles.joinCard}>
-            <Image src="/icons/wave-pink.svg" alt="" width={74} height={16} className={styles.joinWaveLeft} aria-hidden />
-            <Image src="/icons/wave-pink.svg" alt="" width={74} height={16} className={styles.joinWaveRight} aria-hidden />
-            <h2 className={styles.joinTitle}>
-              Приєднуйся до <br />
-              <span>Brainstorm</span>
-            </h2>
-            <p className={styles.joinText}>
-              Найкращі проєкти починаються з однієї людини, яка вирішила діяти. Якщо це хочеш навчатися, знайти однодумців, створювати корисні проєкти або просто бути частиною активної молодіжної спільноти — ми будемо раді познайомитися.
-            </p>
-            <a href="/#join" className={styles.joinBtn}>
-              Стати частиною спільноти
-              <span className={styles.joinBtnIcon}>
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 13L13 3M13 3H5M13 3V11" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </div>
-        </section>
+        <CtaPanel
+          id="join"
+          title={
+            locale === 'en' ? (
+              <>
+                Join <span>Brainstorm</span>
+              </>
+            ) : (
+              <>
+                Приєднуйся до <br />
+                <span>Brainstorm</span>
+              </>
+            )
+          }
+          text={
+            locale === 'en'
+              ? 'The best projects start with one person who decided to act. Write to us — or support the programs that keep the community going.'
+              : 'Найкращі проєкти починаються з однієї людини, яка вирішила діяти. Напишіть нам — або підтримайте програми, що тримають спільноту живою.'
+          }
+          href={contactsWrite}
+          ctaLabel={locale === 'en' ? 'Write to us' : 'Написати нам'}
+          secondary={
+            donateUrl
+              ? { href: donateUrl, label: m.cta.support, external: true, outline: true }
+              : { href: localizedPath('/contacts', locale), label: m.cta.support, outline: true }
+          }
+        />
       </main>
       <Footer locale={locale} />
     </>

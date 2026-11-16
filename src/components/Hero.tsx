@@ -1,92 +1,48 @@
-'use client';
-
 import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import type { CmsEvent } from '@/data/cmsTypes';
+import type { CSSProperties } from 'react';
 import type { Locale } from '@/i18n/locale';
 import { localizedPath } from '@/i18n/locale';
 import { getMessages } from '@/i18n/messages';
-import { formatEventDateTime } from '@/lib/datetime';
-import { CtaArrow } from '@/components/CtaPanel';
+import { CtaArrow } from '@/components/CtaArrow';
+import DecorMark from '@/components/DecorMark';
 import styles from './Hero.module.css';
 
-const FALLBACK_IMAGE = '/hero-kite.jpg';
-const AUTO_INTERVAL_MS = 5500;
-
-type Slide = {
-  id: string;
-  title: string;
-  meta?: string;
-  image: string;
-  href: string;
-};
+const collage = [
+  { src: '/about-outdoor.jpg', alt: 'Молодіжна активність на вулиці', className: styles.photo0 },
+  { src: '/about-desk.jpg', alt: 'Учасниці за робочим столом', className: styles.photo2 },
+  { src: '/about-photos.jpg', alt: 'Виставка фотографій', className: styles.photo1 },
+  { src: '/about-lecture.jpg', alt: 'Лекція в аудиторії', className: styles.photo3 },
+] as const;
 
 type Props = {
   locale?: Locale;
-  events?: CmsEvent[];
+  donateUrl?: string;
 };
 
-function buildSlides(events: CmsEvent[], locale: Locale, fallbackTitle: string): Slide[] {
-  const todayKey = new Date().toISOString().slice(0, 10);
-  const upcoming = events
-    .filter((e) => e.published !== false && e.date >= todayKey)
-    .sort((a, b) => a.date.localeCompare(b.date) || (a.startTime ?? '').localeCompare(b.startTime ?? ''))
-    .slice(0, 6);
-
-  if (upcoming.length === 0) {
-    return [
-      {
-        id: 'fallback',
-        title: fallbackTitle,
-        image: FALLBACK_IMAGE,
-        href: localizedPath('/media', locale),
-      },
-    ];
-  }
-
-  return upcoming.map((event) => ({
-    id: event.id,
-    title: event.title,
-    meta: `${formatEventDateTime(event.date, locale, event.startTime)} · ${event.place}`,
-    image: event.image?.trim() || FALLBACK_IMAGE,
-    href: localizedPath(`/events/${event.id}`, locale),
-  }));
+function PhotoCard({ src, alt, className }: { src: string; alt: string; className: string }) {
+  return (
+    <div className={`${styles.photo} ${className}`} data-reveal="scale">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 45vw, 320px"
+        className={styles.photoImg}
+        priority={className === styles.photo0 || className === styles.photo1}
+      />
+    </div>
+  );
 }
 
-export default function Hero({ locale = 'uk', events = [] }: Props) {
+export default function Hero({ locale = 'uk', donateUrl }: Props) {
   const m = getMessages(locale);
-  const slides = useMemo(
-    () => buildSlides(events, locale, m.cta.events),
-    [events, locale, m.cta.events],
-  );
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    setCurrent((c) => (c >= slides.length ? 0 : c));
-  }, [slides.length]);
-
-  useEffect(() => {
-    if (slides.length <= 1) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
-    }
-    const timer = window.setInterval(() => {
-      setCurrent((c) => (c + 1) % slides.length);
-    }, AUTO_INTERVAL_MS);
-    return () => window.clearInterval(timer);
-  }, [slides.length]);
-
-  const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
-  const next = () => setCurrent((c) => (c + 1) % slides.length);
-
-  const slide = slides[current] ?? slides[0];
+  const supportHref = donateUrl?.trim() || localizedPath('/contacts', locale);
 
   return (
     <section className={styles.hero} data-reveal="fade">
       <div className={styles.container}>
-        <div className={styles.left} data-reveal="left" style={{ '--reveal-delay': '40ms' } as React.CSSProperties}>
-          <Image src="/icons/wave-pink.svg" alt="" width={100} height={23} className={styles.waveTop} aria-hidden />
+        <div className={styles.left} data-reveal="left" style={{ '--reveal-delay': '40ms' } as CSSProperties}>
+          <DecorMark tone="pink" className={styles.waveTop} width={100} height={23} />
           <h1 className={styles.headline}>
             <span className={styles.line1}>{m.hero.line1}</span>
             <span className={styles.line2}>
@@ -98,14 +54,7 @@ export default function Hero({ locale = 'uk', events = [] }: Props) {
             </span>
           </h1>
 
-          <Image
-            src="/icons/sticker-critical.svg"
-            alt=""
-            width={121}
-            height={104}
-            className={styles.stickerCritical}
-            aria-hidden
-          />
+          <DecorMark tone="yellow" variant="arc" className={styles.curveAccent} width={72} height={40} />
 
           <p className={styles.desc}>
             {m.hero.desc}
@@ -113,19 +62,18 @@ export default function Hero({ locale = 'uk', events = [] }: Props) {
             {m.hero.tagline}
           </p>
 
-          <Image
-            src="/icons/sticker-argument.svg"
-            alt=""
-            width={123}
-            height={93}
-            className={styles.stickerArgument}
-            aria-hidden
-          />
+          <DecorMark tone="blue" className={styles.waveAccent} width={88} height={20} />
         </div>
 
-        <div className={styles.actions} data-reveal="up" style={{ '--reveal-delay': '80ms' } as React.CSSProperties}>
-          <a href={localizedPath('/media', locale)} className="ui-btn ui-btn--primary">
-            {m.cta.events}
+        <div className={styles.actions} data-reveal="up" style={{ '--reveal-delay': '80ms' } as CSSProperties}>
+          <a
+            href={supportHref}
+            className="ui-btn ui-btn--primary"
+            {...(donateUrl?.trim()
+              ? { target: '_blank', rel: 'noreferrer' }
+              : {})}
+          >
+            {m.cta.support}
             <CtaArrow />
           </a>
           <a href="#directions" className="ui-btn ui-btn--outline">
@@ -133,78 +81,16 @@ export default function Hero({ locale = 'uk', events = [] }: Props) {
           </a>
         </div>
 
-        <div className={styles.right} data-reveal="right" style={{ '--reveal-delay': '120ms' } as React.CSSProperties}>
-          <div className={styles.slider}>
-            <Link href={slide.href} className={styles.slideLink} aria-label={slide.title}>
-              <div className={styles.slideImg}>
-                {slides.map((item, index) => (
-                  <Image
-                    key={item.id}
-                    src={item.image}
-                    alt={index === current ? item.title : ''}
-                    fill
-                    priority={index === 0}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className={`${styles.slidePhoto} ${index === current ? styles.slidePhotoActive : ''}`}
-                    aria-hidden={index !== current}
-                  />
-                ))}
-                <div className={styles.slideCaption} aria-live="polite">
-                  <span className={styles.slideTitle}>{slide.title}</span>
-                  {slide.meta ? <span className={styles.slideMeta}>{slide.meta}</span> : null}
-                </div>
-                <Image src="/icons/wave-pink.svg" alt="" width={100} height={23} className={styles.waveBottom} aria-hidden />
-              </div>
-            </Link>
-
-            {slides.length > 1 ? (
-              <>
-                <button
-                  type="button"
-                  className={`${styles.arrow} ${styles.arrowLeft}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    prev();
-                  }}
-                  aria-label="Prev"
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M13 4L7 10L13 16" stroke="#111" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  className={`${styles.arrow} ${styles.arrowRight}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    next();
-                  }}
-                  aria-label="Next"
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 4L13 10L7 16" stroke="#111" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
-                </button>
-
-                <div className={styles.dots}>
-                  {slides.map((item, i) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrent(i);
-                      }}
-                      aria-label={`${i + 1} / ${slides.length}`}
-                      aria-current={i === current ? 'true' : undefined}
-                    />
-                  ))}
-                </div>
-              </>
-            ) : null}
+        <div className={styles.right} data-reveal="right" style={{ '--reveal-delay': '120ms' } as CSSProperties}>
+          <div className={styles.collage}>
+            <div className={styles.col}>
+              <PhotoCard {...collage[0]} />
+              <PhotoCard {...collage[1]} />
+            </div>
+            <div className={styles.col}>
+              <PhotoCard {...collage[2]} />
+              <PhotoCard {...collage[3]} />
+            </div>
           </div>
         </div>
       </div>

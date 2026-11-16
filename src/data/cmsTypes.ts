@@ -20,6 +20,8 @@ export type CmsProject = {
   resultsEn?: string[];
   body: string;
   bodyEn?: string;
+  /** Optional gallery photos shown on the project detail page */
+  photos?: string[];
   published: boolean;
 };
 
@@ -50,6 +52,8 @@ export type CmsEvent = {
   bodyEn?: string;
   published: boolean;
   registrationEnabled?: boolean;
+  /** External registration (Google Forms etc.). When set, the CTA opens this URL. */
+  registrationUrl?: string;
   capacity?: number;
   registrationNote?: string;
   registrationNoteEn?: string;
@@ -190,6 +194,10 @@ export type SiteSettings = {
   socialTelegram: string;
   socialTiktok: string;
   socialYoutube: string;
+  /** Monobank / donate jar URL */
+  donateUrl: string;
+  /** Project IDs featured on About (one per line or comma-separated) */
+  featuredProjectIds: string;
   metaTitle: string;
   metaTitleEn?: string;
   metaDescription: string;

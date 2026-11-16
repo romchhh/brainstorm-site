@@ -11,7 +11,7 @@ function lastModifiedFromDate(value: string | undefined, fallback: Date): Date {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const paths = ['/', '/about', '/projects', '/media', '/transparency', '/contacts', '/ecomonitoring', '/privacy-policy', '/public-offer'];
+  const paths = ['/', '/about', '/projects', '/media', '/news', '/transparency', '/contacts', '/ecomonitoring', '/privacy-policy', '/public-offer'];
 
   const localized = (path: string, locale: 'uk' | 'en'): MetadataRoute.Sitemap[number] => ({
     url: toCanonical(pagePathForLocale(path, locale)),

@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import EventDetailActions from '@/components/EventDetailActions';
 import EventMap from '@/components/EventMap';
 import type { EventFormat } from '@/data/cmsTypes';
-import { cmsEventById, cmsEvents } from '@/lib/cms/content';
+import { cmsEventById, cmsEvents, cmsSettings } from '@/lib/cms/content';
 import { getMessages } from '@/i18n/messages';
 import { localizedPath } from '@/i18n/locale';
 import { getServerLocale, pagePathForLocale } from '@/lib/localeServer';
@@ -68,6 +68,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
   const locale = await getServerLocale();
   const event = cmsEventById(id, locale);
   if (!event) notFound();
+  const settings = cmsSettings(locale);
 
   const m = getMessages(locale);
   const ep = m.eventPage;
@@ -107,7 +108,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(structuredEvent)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <div className={styles.page}>
           <Link href={calendarHash} className={styles.back}>

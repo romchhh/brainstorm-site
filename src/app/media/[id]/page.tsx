@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TickerFromCms from '@/components/TickerFromCms';
-import { cmsNews, cmsNewsById } from '@/lib/cms/content';
+import { cmsNews, cmsNewsById, cmsSettings } from '@/lib/cms/content';
 import { getServerLocale, pagePathForLocale } from '@/lib/localeServer';
 import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, newsArticleJsonLd } from '@/lib/seo';
 import styles from './page.module.css';
@@ -46,6 +46,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
   const locale = await getServerLocale();
   const article = cmsNewsById(id, locale);
   if (!article) notFound();
+  const settings = cmsSettings(locale);
 
   const isEn = locale === 'en';
   const body = article.body || article.excerpt;
@@ -54,6 +55,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
   const breadcrumbs = breadcrumbJsonLd([
     { name: isEn ? 'Home' : 'Головна', path: pagePathForLocale('/', locale) },
     { name: isEn ? 'News & events' : 'Актуальні події', path: pagePathForLocale('/media', locale) },
+    { name: isEn ? 'All news' : 'Усі новини', path: pagePathForLocale('/news', locale) },
     { name: article.title, path: pagePathForLocale(`/media/${article.id}`, locale) },
   ]);
 
@@ -69,11 +71,11 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(articleJsonLd)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <article className={styles.article}>
           <div className={styles.container}>
-            <Link href={pagePathForLocale('/media', locale)} className={styles.back}>
+            <Link href={pagePathForLocale('/news', locale)} className={styles.back}>
               ← {isEn ? 'All news' : 'Усі новини'}
             </Link>
             <div className={styles.meta}>

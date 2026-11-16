@@ -38,14 +38,19 @@
 
 .heroImage {
   position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 520px;
-  margin-bottom: 28px;
+  width: min(760px, calc(100% - var(--page-gutter-2)));
+  margin: 0 auto 28px;
+  aspect-ratio: 16 / 10;
+  max-height: 360px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #f3f3f3;
+  border: var(--border-width) solid var(--color-border);
 }
 
 .photo {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .body {

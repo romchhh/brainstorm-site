@@ -86,6 +86,29 @@
   color: #222;
 }
 
+.mission {
+  max-width: 640px;
+  margin: 20px auto 0;
+  padding: 14px 18px;
+  border-left: 4px solid var(--pink);
+  background: color-mix(in srgb, var(--pink) 10%, white);
+  text-align: left;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: #222;
+}
+
+.missionLabel {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
 .actions {
   display: flex;
   justify-content: center;

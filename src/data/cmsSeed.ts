@@ -27,6 +27,7 @@ export const SEED_PROJECTS: CmsProject[] = [
       'Розвиток навичок аргументації та публічних виступів',
     ],
     body: 'Клуб «Голос» — це простір, де молодь вчиться формулювати позицію, слухати опонента і виступати впевнено. Формат поєднує тренування, менторство та відкриті івенти.',
+    photos: ['/about-lecture.jpg', '/about-photos.jpg'],
     published: true,
   },
   {
@@ -45,6 +46,7 @@ export const SEED_PROJECTS: CmsProject[] = [
       'Публічні звіти для партнерів і медіа',
     ],
     body: 'Проєкт поєднує науковий підхід і громадську дію: учасники збирають дані, аналізують результати та залучають місцеві спільноти до турботи про довкілля.',
+    photos: ['/about-outdoor.jpg', '/about/values/photos/value-lab.jpg'],
     published: true,
   },
   {
@@ -63,6 +65,7 @@ export const SEED_PROJECTS: CmsProject[] = [
       'Нові партнерства зі школами та хабами',
     ],
     body: 'Demo Day дав молодим інженерам сцену для презентації ідей. Учасники показали прототипи, отримали зворотний звʼязок і можливості для подальшого розвитку.',
+    photos: ['/about-desk.jpg', '/about/values/photos/value-achievement.jpg'],
     published: true,
   },
   {
@@ -560,6 +563,8 @@ export function defaultCmsDb(): CmsDb {
       socialTelegram: 'https://t.me/Brainstorm_ShDK',
       socialTiktok: 'https://www.tiktok.com/@brainstorm.ngo',
       socialYoutube: 'https://www.youtube.com/channel/UCyaXTpH7aE1tft_YDImmlkQ',
+      donateUrl: 'https://send.monobank.ua/jar/brainstorm',
+      featuredProjectIds: '1,2,3,4,5,6',
       metaTitle: 'Brainstorm — молодіжна організація дебатів, екології та STEM',
       metaDescription:
         'Brainstorm — молодіжна громадська організація, що розвиває критичне мислення і лідерство через дебати, екологічні ініціативи та науку.',

@@ -1,0 +1,112 @@
+.section {
+  padding: var(--section-pad-y) 0;
+  background: var(--color-page-bg);
+  border-top: var(--section-gap) solid var(--color-border);
+}
+
+.container {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 24px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  margin-right: auto;
+}
+
+.lead {
+  max-width: 420px;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-text-muted);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-width-strong) solid var(--color-black);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) minmax(0, 1fr) auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 4px;
+  border-bottom: var(--border-width) solid var(--color-border);
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.row:hover {
+  background: color-mix(in srgb, var(--yellow) 18%, white);
+  padding-left: 8px;
+}
+
+.theme {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.meta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.arrow {
+  font-weight: 700;
+  opacity: 0.55;
+}
+
+@media (max-width: 768px) {
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .row {
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+  }
+
+  .theme {
+    grid-column: 1 / -1;
+  }
+
+  .meta {
+    grid-column: 1;
+  }
+
+  .arrow {
+    grid-row: 2 / 4;
+    grid-column: 2;
+    align-self: center;
+  }
+}

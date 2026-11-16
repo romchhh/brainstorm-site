@@ -90,6 +90,26 @@ export default function SettingsView() {
         </div>
       </AdminCard>
 
+      <AdminCard title="Підтримка та Про нас">
+        <div className={ui.formGrid}>
+          <Field label="Посилання Monobank / донат">
+            <input
+              value={form.donateUrl ?? ''}
+              onChange={(e) => set('donateUrl', e.target.value)}
+              placeholder="https://send.monobank.ua/jar/…"
+            />
+          </Field>
+          <Field label="ID проєктів на сторінці «Про нас» (через кому або з нового рядка)">
+            <textarea
+              rows={3}
+              value={form.featuredProjectIds ?? ''}
+              onChange={(e) => set('featuredProjectIds', e.target.value)}
+              placeholder="1,2,3,4,5"
+            />
+          </Field>
+        </div>
+      </AdminCard>
+
       <AdminCard title="SEO">
         <div className={ui.formGrid}>
           <Field label="Meta title">

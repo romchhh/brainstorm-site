@@ -4,16 +4,17 @@ import Footer from '@/components/Footer';
 import TickerFromCms from '@/components/TickerFromCms';
 import PageHero, { HeroMark } from '@/components/PageHero';
 import ProjectsCatalog from '@/components/ProjectsCatalog';
-import ProjectsGallery from '@/components/ProjectsGallery';
 import HomeJoinBanner from '@/components/HomeJoinBanner';
-import { cmsGallery, cmsProjects } from '@/lib/cms/content';
+import { cmsProjects, cmsSettings } from '@/lib/cms/content';
 import { getServerLocale } from '@/lib/localeServer';
+import { localizedPath } from '@/i18n/locale';
+import { getMessages } from '@/i18n/messages';
 import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript, SITE_URL } from '@/lib/seo';
 import styles from './page.module.css';
 
 const pageTitle = 'Проєкти — Brainstorm | Реалізовані та поточні ініціативи';
 const pageDescription =
-  'Каталог проєктів Brainstorm: дебати, екологія, STEM. Фільтри за статусом і тематикою, фотогалерея подій і детальні кейси.';
+  'Каталог проєктів Brainstorm: дебати, екологія, STEM. Фільтри за статусом і тематикою, детальні кейси з фото.';
 
 export const metadata: Metadata = buildPageMetadata({
   title: pageTitle,
@@ -27,7 +28,6 @@ export const metadata: Metadata = buildPageMetadata({
     'дебатні проєкти',
     'екологічні проєкти',
     'STEM проєкти',
-    'фотогалерея подій',
   ],
 });
 
@@ -36,7 +36,8 @@ export const revalidate = 300;
 export default async function ProjectsPage() {
   const locale = await getServerLocale();
   const projects = cmsProjects(locale);
-  const gallery = cmsGallery(locale);
+  const settings = cmsSettings(locale);
+  const m = getMessages(locale);
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -56,7 +57,7 @@ export default async function ProjectsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(collectionJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <PageHero
           title={
@@ -68,7 +69,10 @@ export default async function ProjectsPage() {
           }
           description="Майстер-класи, турніри, екскурсії, табори. Обирайте нові враження та приєднуйтеся до ініціатив спільноти."
           primary={{ href: '#projects-catalog', label: 'ПЕРЕГЛЯНУТИ ПРОЄКТИ' }}
-          secondary={{ href: '/contacts', label: 'ПІДТРИМАТИ' }}
+          secondary={{
+            href: `${localizedPath('/media', locale)}#schedule`,
+            label: m.cta.upcomingEvents,
+          }}
           leftImage="/about-outdoor.jpg"
           leftAlt="Учасники екологічної ініціативи"
           rightImage="/about-desk.jpg"
@@ -77,33 +81,8 @@ export default async function ProjectsPage() {
         />
 
         <TickerFromCms locale={locale} />
-
-        <section className={styles.previewSection} id="directions-block">
-          <div className={styles.container}>
-            <h2 className={styles.previewTitle} data-reveal="up">
-              Напрями, в яких ми діємо
-            </h2>
-
-            <div className={styles.previewGrid} data-reveal="up">
-              <div className={`${styles.previewCard} ${styles.cardPink}`}>
-                <h3 className={styles.directionTitle}>Дебати та публічні виступи</h3>
-                <p className={styles.directionText}>Клуби, турніри, тренінги з аргументації та впевненого голосу.</p>
-              </div>
-              <div className={`${styles.previewCard} ${styles.cardGreen}`}>
-                <h3 className={styles.directionTitle}>Екологія та довкілля</h3>
-                <p className={styles.directionText}>Прибирання, моніторинг і просвітницькі ініціативи зі сталого розвитку.</p>
-              </div>
-              <div className={`${styles.previewCard} ${styles.cardBlue}`}>
-                <h3 className={styles.directionTitle}>Наука та робототехніка</h3>
-                <p className={styles.directionText}>STEM-майстерні, мейкер-лабораторії та змагання з робототехніки.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <ProjectsCatalog projects={projects} />
-        <ProjectsGallery albums={gallery} locale={locale} />
-        <HomeJoinBanner locale={locale} />
+        <HomeJoinBanner locale={locale} variant="upcoming" />
       </main>
       <Footer locale={locale} />
     </>

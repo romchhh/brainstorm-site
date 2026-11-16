@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import type { Locale } from '@/i18n/locale';
 import { localizedPath } from '@/i18n/locale';
 import { getMessages } from '@/i18n/messages';
-import { CtaArrow } from '@/components/CtaPanel';
+import { CtaArrow } from '@/components/CtaArrow';
+import DecorMark from '@/components/DecorMark';
 import ImpactStats from '@/components/ImpactStats';
 import { cmsSettings } from '@/lib/cms/content';
 import styles from './Directions.module.css';
@@ -57,41 +57,14 @@ const directionsEn = [
 
 function CardDecor({ type }: { type: 'debates' | 'wave' | 'argue' }) {
   if (type === 'debates') {
-    return (
-      <Image
-        src="/icons/sticker-critical.svg"
-        alt=""
-        width={121}
-        height={104}
-        className={styles.decorDebates}
-        aria-hidden
-      />
-    );
+    return <DecorMark tone="yellow" variant="arc" className={styles.decorDebates} width={72} height={40} />;
   }
 
   if (type === 'wave') {
-    return (
-      <Image
-        src="/icons/wave-pink.svg"
-        alt=""
-        width={72}
-        height={16}
-        className={styles.decorWave}
-        aria-hidden
-      />
-    );
+    return <DecorMark tone="pink" className={styles.decorWave} width={72} height={16} />;
   }
 
-  return (
-    <Image
-      src="/icons/sticker-debates.svg"
-      alt=""
-      width={117}
-      height={116}
-      className={styles.decorArgue}
-      aria-hidden
-    />
-  );
+  return <DecorMark tone="blue" className={styles.decorArgue} width={88} height={20} />;
 }
 
 export default function Directions({ locale = 'uk' }: { locale?: Locale }) {

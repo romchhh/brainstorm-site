@@ -4,14 +4,13 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { cmsProjectById, cmsProjects } from '@/lib/cms/content';
+import { cmsProjectById, cmsProjects, cmsSettings } from '@/lib/cms/content';
 import { getServerLocale } from '@/lib/localeServer';
 import {
   buildPageMetadata,
   breadcrumbJsonLd,
   jsonLdScript,
   projectArticleJsonLd,
-  SITE_URL,
 } from '@/lib/seo';
 import styles from './page.module.css';
 
@@ -48,6 +47,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const locale = await getServerLocale();
   const project = cmsProjectById(id, locale);
   if (!project) notFound();
+  const settings = cmsSettings(locale);
+  const gallery = (project.photos?.length ? project.photos : [project.image]).filter(Boolean);
 
   const breadcrumbs = breadcrumbJsonLd([
     { name: 'Головна', path: '/' },
@@ -67,7 +68,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(articleJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className={styles.container}>
@@ -80,9 +81,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               {project.period} · {project.partners}
             </p>
           </div>
-          <div className={styles.heroImage}>
-            <Image src={project.image} alt={project.title} fill className={styles.photo} priority />
-          </div>
         </section>
 
         <section className={styles.section}>
@@ -91,6 +89,25 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               <div className={styles.content}>
                 <h2 className={styles.sectionTitle}>Про проєкт</h2>
                 <p className={styles.body}>{project.body}</p>
+
+                {gallery.length ? (
+                  <div className={styles.gallery}>
+                    <h3 className={styles.galleryTitle}>Фото</h3>
+                    <div className={styles.galleryGrid}>
+                      {gallery.map((src) => (
+                        <figure key={src} className={styles.galleryItem}>
+                          <Image
+                            src={src}
+                            alt={project.title}
+                            fill
+                            className={styles.galleryPhoto}
+                            sizes="(max-width: 900px) 100vw, 360px"
+                          />
+                        </figure>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
               <aside className={styles.aside}>
                 <h3 className={styles.asideTitle}>Результати</h3>

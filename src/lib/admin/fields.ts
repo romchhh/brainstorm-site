@@ -25,6 +25,7 @@ export const projectFields: CrudField[] = [
   { key: 'resultsEn', label: 'Результати EN (рядки)', type: 'lines' },
   { key: 'body', label: 'Повний текст', type: 'textarea' },
   { key: 'bodyEn', label: 'Повний текст (EN)', type: 'textarea' },
+  { key: 'photos', label: 'Фото проєкту (URL, по одному в рядку)', type: 'lines' },
   { key: 'published', label: 'Публікація', type: 'checkbox', table: true },
 ];
 
@@ -59,7 +60,13 @@ export const eventFields: CrudField[] = [
   { key: 'excerptEn', label: 'Короткий опис (EN)', type: 'textarea' },
   { key: 'body', label: 'Повний опис', type: 'textarea' },
   { key: 'bodyEn', label: 'Повний опис (EN)', type: 'textarea' },
-  { key: 'registrationEnabled', label: 'Реєстрація на сайті', type: 'checkbox', table: true },
+  { key: 'registrationEnabled', label: 'Реєстрація увімкнена', type: 'checkbox', table: true },
+  {
+    key: 'registrationUrl',
+    label: 'Зовнішнє посилання на реєстрацію (Forms тощо)',
+    placeholder: 'https://forms.gle/… — якщо заповнено, кнопка відкриває це посилання',
+    fullWidth: true,
+  },
   { key: 'capacity', label: 'Місць (0 = без ліміту)', placeholder: '30' },
   { key: 'registrationNote', label: 'Примітка для учасників', type: 'textarea', placeholder: 'Що взяти з собою, час збору…' },
   { key: 'registrationNoteEn', label: 'Примітка (EN)', type: 'textarea' },

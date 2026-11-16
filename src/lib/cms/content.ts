@@ -26,6 +26,21 @@ export function cmsProjectById(id: string, locale: Locale = 'uk'): CmsProject | 
   return cmsProjects(locale).find((p) => p.id === id);
 }
 
+/** Featured projects for About page, ordered by settings.featuredProjectIds */
+export function cmsFeaturedProjects(locale: Locale = 'uk', limit = 6): CmsProject[] {
+  const settings = cmsSettings(locale);
+  const ids = String(settings.featuredProjectIds ?? '')
+    .split(/[\n,]+/)
+    .map((id) => id.trim())
+    .filter(Boolean);
+  const all = cmsProjects(locale);
+  if (!ids.length) return all.slice(0, limit);
+
+  const byId = new Map(all.map((p) => [p.id, p]));
+  const picked = ids.map((id) => byId.get(id)).filter(Boolean) as CmsProject[];
+  return picked.slice(0, limit);
+}
+
 export function cmsEvents(locale: Locale = 'uk'): CmsEvent[] {
   return published(readDb().events)
     .map((event) => normalizeEvent(event))

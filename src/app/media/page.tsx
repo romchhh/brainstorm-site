@@ -4,11 +4,13 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TickerFromCms from '@/components/TickerFromCms';
 import Link from 'next/link';
-import { cmsEvents, cmsNews } from '@/lib/cms/content';
+import { cmsEvents, cmsNews, cmsSettings } from '@/lib/cms/content';
 import { getServerLocale, pagePathForLocale } from '@/lib/localeServer';
 import PageHero, { HeroMark } from '@/components/PageHero';
 import EventsCalendar from '@/components/EventsCalendar';
 import HomeJoinBanner from '@/components/HomeJoinBanner';
+import { CtaArrow } from '@/components/CtaArrow';
+import { getMessages } from '@/i18n/messages';
 import {
   buildPageMetadata,
   breadcrumbJsonLd,
@@ -47,6 +49,10 @@ export default async function MediaPage() {
   const locale = await getServerLocale();
   const news = cmsNews(locale);
   const schedule = cmsEvents(locale);
+  const settings = cmsSettings(locale);
+  const m = getMessages(locale);
+  const previewNews = news.slice(0, 3);
+
   const collectionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -65,7 +71,7 @@ export default async function MediaPage() {
   const newsListJsonLd = itemListJsonLd(
     news.map((item) => ({
       name: item.title,
-      url: toCanonical('/media'),
+      url: toCanonical(`/media/${item.id}`),
     })),
   );
 
@@ -83,7 +89,7 @@ export default async function MediaPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(collectionJsonLd)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(newsListJsonLd)} />
-      {news.slice(0, 3).map((item) => (
+      {previewNews.map((item) => (
         <script
           key={item.id}
           type="application/ld+json"
@@ -93,7 +99,7 @@ export default async function MediaPage() {
               excerpt: item.excerpt,
               date: item.date,
               image: item.image,
-              path: '/media',
+              path: `/media/${item.id}`,
             }),
           )}
         />
@@ -101,7 +107,7 @@ export default async function MediaPage() {
       {eventsJsonLd.map((data, index) => (
         <script key={index} type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(data)} />
       ))}
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <PageHero
           title={
@@ -112,8 +118,8 @@ export default async function MediaPage() {
             </>
           }
           description="Слідкуйте за тим, що відбувається в спільноті: свіжі публікації, найближчі заходи та можливості долучитися."
-          primary={{ href: '#news', label: 'ЧИТАТИ НОВИНИ' }}
-          secondary={{ href: '#schedule', label: 'КАЛЕНДАР ПОДІЙ' }}
+          primary={{ href: '#schedule', label: 'КАЛЕНДАР ПОДІЙ' }}
+          secondary={{ href: '#news', label: 'ЧИТАТИ НОВИНИ' }}
           leftImage="/about-lecture.jpg"
           leftAlt="Учасники дебатного заходу"
           rightImage="/about-outdoor.jpg"
@@ -123,20 +129,45 @@ export default async function MediaPage() {
 
         <TickerFromCms locale={locale} />
 
-        <section className={styles.section} id="news" data-reveal="up">
+        <section className={styles.scheduleSection} id="schedule" data-reveal="up">
           <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Новини та анонси</h2>
+            <h2 className={styles.sectionTitle}>Календар подій</h2>
             <p className={styles.sectionLead}>
-              {locale === 'en'
-                ? 'Latest posts from the community. Open any article for the full story.'
-                : 'Останні публікації зі спільноти. Відкрийте статтю для повного тексту.'}
+              Оберіть день у календарі. Колір позначки відповідає напрямку діяльності.
             </p>
 
+            <EventsCalendar events={schedule} locale={locale} />
+          </div>
+        </section>
+
+        <section className={styles.section} id="news" data-reveal="up">
+          <div className={styles.container}>
+            <div className={styles.sectionHead}>
+              <div>
+                <h2 className={styles.sectionTitle}>Новини та анонси</h2>
+                <p className={styles.sectionLead}>
+                  {locale === 'en'
+                    ? 'Latest posts from the community. Open any article for the full story.'
+                    : 'Останні публікації зі спільноти. Відкрийте статтю для повного тексту.'}
+                </p>
+              </div>
+              <Link href={pagePathForLocale('/news', locale)} className="ui-btn ui-btn--outline">
+                {m.cta.allNews}
+                <CtaArrow />
+              </Link>
+            </div>
+
             <div className={styles.newsGrid}>
-              {news.map((item) => (
+              {previewNews.map((item) => (
                 <article key={item.title} className={styles.newsCard} data-reveal="up">
                   <div className={`${styles.newsMedia} ui-card-photo`}>
-                    <Image src={item.image} alt={item.title} fill className={styles.newsPhoto} sizes="(max-width: 900px) 100vw, 33vw" />
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className={styles.newsPhoto}
+                      sizes="(max-width: 900px) 100vw, 33vw"
+                    />
                   </div>
                   <div className={styles.newsBody}>
                     <div className={styles.newsMeta}>
@@ -160,17 +191,7 @@ export default async function MediaPage() {
           </div>
         </section>
 
-        <section className={styles.scheduleSection} id="schedule" data-reveal="up">
-          <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Календар подій</h2>
-            <p className={styles.sectionLead}>
-              Оберіть день у календарі. Колір позначки відповідає напрямку діяльності.
-            </p>
-
-            <EventsCalendar events={schedule} locale={locale} />
-          </div>
-        </section>
-        <HomeJoinBanner locale={locale} />
+        <HomeJoinBanner locale={locale} variant="support" donateUrl={settings.donateUrl} />
       </main>
       <Footer locale={locale} />
     </>

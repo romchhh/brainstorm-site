@@ -89,17 +89,20 @@
 .cover {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 440px;
+  max-width: 860px;
+  aspect-ratio: 16 / 10;
+  max-height: 360px;
   border-radius: var(--radius-lg);
   border: var(--border-width-strong) solid var(--color-black);
   overflow: hidden;
   box-shadow: 6px 6px 0 rgba(17, 17, 17, 0.08);
   margin-bottom: var(--space-7);
+  background: #f3f3f3;
 }
 
 .photo {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .layout {

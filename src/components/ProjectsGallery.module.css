@@ -69,7 +69,8 @@
 }
 
 .photo {
-  object-fit: cover;
+  object-fit: contain;
+  background: #f5f5f5;
 }
 
 .caption {
@@ -132,10 +133,16 @@
 .albumPhoto {
   position: relative;
   aspect-ratio: 4/3;
+  max-height: 280px;
   margin: 0;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(17, 17, 17, 0.12);
+  background: #f5f5f5;
+}
+
+.albumPhoto :global(img) {
+  object-fit: contain;
 }
 
 .albumPhoto figcaption {

@@ -2,13 +2,11 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import TickerFromCms from '@/components/TickerFromCms';
-import About from '@/components/About';
 import Directions from '@/components/Directions';
-import HomeNewsFromCms from '@/components/HomeNewsFromCms';
 import HomeUpcomingEvents from '@/components/HomeUpcomingEvents';
 import HomeJoinBanner from '@/components/HomeJoinBanner';
 import Footer from '@/components/Footer';
-import { cmsEvents, cmsNews } from '@/lib/cms/content';
+import { cmsEvents, cmsSettings } from '@/lib/cms/content';
 import { getServerLocale } from '@/lib/localeServer';
 import {
   SITE_DEFAULT_DESCRIPTION,
@@ -41,22 +39,20 @@ export const revalidate = 300;
 
 export default async function Home() {
   const locale = await getServerLocale();
-  const news = cmsNews(locale);
   const events = cmsEvents(locale);
+  const settings = cmsSettings(locale);
   const breadcrumbs = breadcrumbJsonLd([{ name: 'Головна', path: '/' }]);
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main>
-        <Hero locale={locale} events={events} />
+        <Hero locale={locale} donateUrl={settings.donateUrl} />
         <TickerFromCms locale={locale} />
-        <About locale={locale} />
         <Directions locale={locale} />
-        <HomeNewsFromCms items={news} locale={locale} />
         <HomeUpcomingEvents events={events} locale={locale} />
-        <HomeJoinBanner locale={locale} />
+        <HomeJoinBanner locale={locale} variant="pickEvent" />
       </main>
       <Footer locale={locale} />
     </>
