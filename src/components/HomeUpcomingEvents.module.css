@@ -46,6 +46,17 @@
   gap: 12px;
 }
 
+.empty {
+  margin: 0;
+  padding: 20px 18px;
+  border: var(--border-width-strong) dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--yellow) 10%, white);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
 .row {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr) auto;

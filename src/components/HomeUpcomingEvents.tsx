@@ -44,38 +44,44 @@ export default function HomeUpcomingEvents({ events, locale }: Props) {
           </Link>
         </div>
 
-        <div className={styles.list}>
-          {upcoming.map((event) => (
-            <article key={event.id} className={styles.row} data-reveal="up">
-              <div className={styles.media}>
-                <Image
-                  src={eventCover(event)}
-                  alt={event.title}
-                  fill
-                  sizes="(max-width: 640px) 280px, 96px"
-                  className={styles.photo}
-                />
-                <span className={styles.colorTag} style={{ background: event.color }} aria-hidden />
-              </div>
-              <div className={styles.main}>
-                <span className={styles.direction}>{event.direction}</span>
-                <h3 className={styles.eventTitle}>
-                  <Link href={localizedPath(`/events/${event.id}`, locale)} className={styles.eventLink}>
-                    {event.title}
-                  </Link>
-                </h3>
-                <p className={styles.place}>
-                  {formatEventDateTime(event.date, locale, event.startTime)} · {event.place}
-                </p>
-                {event.excerpt ? <p className={styles.excerpt}>{event.excerpt}</p> : null}
-              </div>
-              <Link href={localizedPath(`/events/${event.id}`, locale)} className="ui-btn ui-btn--primary">
-                {m.eventPage.details}
-                <CtaArrow />
-              </Link>
-            </article>
-          ))}
-        </div>
+        {upcoming.length ? (
+          <div className={styles.list}>
+            {upcoming.map((event) => (
+              <article key={event.id} className={styles.row} data-reveal="up">
+                <div className={styles.media}>
+                  <Image
+                    src={eventCover(event)}
+                    alt={event.title}
+                    fill
+                    sizes="(max-width: 640px) 280px, 96px"
+                    className={styles.photo}
+                  />
+                  <span className={styles.colorTag} style={{ background: event.color }} aria-hidden />
+                </div>
+                <div className={styles.main}>
+                  <span className={styles.direction}>{event.direction}</span>
+                  <h3 className={styles.eventTitle}>
+                    <Link href={localizedPath(`/events/${event.id}`, locale)} className={styles.eventLink}>
+                      {event.title}
+                    </Link>
+                  </h3>
+                  <p className={styles.place}>
+                    {formatEventDateTime(event.date, locale, event.startTime)} · {event.place}
+                  </p>
+                  {event.excerpt ? <p className={styles.excerpt}>{event.excerpt}</p> : null}
+                </div>
+                <Link href={localizedPath(`/events/${event.id}`, locale)} className="ui-btn ui-btn--primary">
+                  {m.eventPage.details}
+                  <CtaArrow />
+                </Link>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.empty} data-reveal="up">
+            {m.home.eventsEmpty}
+          </p>
+        )}
       </div>
     </section>
   );

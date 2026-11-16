@@ -5,7 +5,8 @@ import Footer from '@/components/Footer';
 import { getMessages } from '@/i18n/messages';
 import { localizedPath } from '@/i18n/locale';
 import { getServerLocale } from '@/lib/localeServer';
-import { CtaArrow } from '@/components/CtaPanel';
+import { CtaArrow } from '@/components/CtaArrow';
+import { cmsSettings } from '@/lib/cms/content';
 import { jsonLdScript, toCanonical, webPageJsonLd } from '@/lib/seo';
 import styles from './not-found.module.css';
 
@@ -23,6 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function NotFound() {
   const locale = await getServerLocale();
   const m = getMessages(locale);
+  const settings = cmsSettings(locale);
 
   const helpfulLinks = [
     { href: localizedPath('/', locale), label: m.notFound.linkHome },
@@ -41,7 +43,7 @@ export default async function NotFound() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(pageJsonLd)} />
-      <Header locale={locale} />
+      <Header locale={locale} donateUrl={settings.donateUrl} />
       <main className={styles.main}>
         <section className={styles.card}>
           <p className={styles.code}>404</p>

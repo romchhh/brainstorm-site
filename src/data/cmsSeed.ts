@@ -127,7 +127,7 @@ export const SEED_PROJECTS: CmsProject[] = [
 export const SEED_EVENTS: CmsEvent[] = [
   {
     id: 'ev-1',
-    date: '2026-09-22',
+    date: '2026-11-22',
     startTime: '10:00',
     title: 'Національний фінал дебатів',
     titleEn: 'National debate finals',
@@ -156,7 +156,7 @@ export const SEED_EVENTS: CmsEvent[] = [
   },
   {
     id: 'ev-2',
-    date: '2026-10-02',
+    date: '2026-12-05',
     startTime: '09:00',
     title: 'Екодесант: прибирання річки',
     titleEn: 'Eco mission: river cleanup',
@@ -178,6 +178,7 @@ export const SEED_EVENTS: CmsEvent[] = [
     bodyEn:
       'Brainstorm eco missions combine cleanup with data for local monitoring. Volunteers work in sectors, collect litter, and sort recyclables.\n\nAfter cleanup — a short talk on microplastics and water safety. We share results with ecology partners for community reporting.\n\nMeet at 09:00 by the bridge. Gloves, bags, and tools provided. Sturdy shoes and a hat recommended.',
     registrationEnabled: true,
+    registrationUrl: 'https://forms.gle/example-brainstorm-eco',
     capacity: 40,
     registrationNote: 'Збір о 09:00 біля мосту. Рукавички надаємо на місці.',
     registrationNoteEn: 'Meet at 09:00 by the bridge. Gloves provided on site.',
@@ -185,7 +186,7 @@ export const SEED_EVENTS: CmsEvent[] = [
   },
   {
     id: 'ev-3',
-    date: '2026-10-14',
+    date: '2026-12-14',
     startTime: '11:00',
     title: 'STEM-майстерня та Demo Day',
     titleEn: 'STEM workshop & Demo Day',
@@ -213,7 +214,7 @@ export const SEED_EVENTS: CmsEvent[] = [
   },
   {
     id: 'ev-4',
-    date: '2026-11-08',
+    date: '2026-11-29',
     startTime: '18:00',
     title: 'Відкритий мікрофон',
     titleEn: 'Open mic night',

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { cmsSettings } from '@/lib/cms/content';
 import { buildPageMetadata, breadcrumbJsonLd, jsonLdScript } from '@/lib/seo';
 import styles from './privacy-policy.module.css';
 
@@ -16,6 +17,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default function PrivacyPolicyPage() {
+  const settings = cmsSettings();
   const breadcrumbs = breadcrumbJsonLd([
     { name: 'Головна', path: '/' },
     { name: 'Політика конфіденційності', path: '/privacy-policy' },
@@ -24,7 +26,7 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(breadcrumbs)} />
-      <Header />
+      <Header donateUrl={settings.donateUrl} />
       <main className={styles.page}>
         <div className={styles.container}>
           <h1 className={styles.title}>Політика конфіденційності</h1>

@@ -23,14 +23,11 @@ export default function EventDetailActions({
   locale = 'uk',
 }: Props) {
   const [open, setOpen] = useState(false);
-  const canRegister = event.registrationEnabled !== false;
   const externalUrl = event.registrationUrl?.trim();
+  const onSiteOpen = event.registrationEnabled !== false;
   const btnClass = `ui-btn ui-btn--primary ${variant === 'sidebar' ? 'ui-btn--block' : ''}`;
 
-  if (!canRegister) {
-    return <p className={styles.closed}>{closedLabel}</p>;
-  }
-
+  // External Forms / Google Form links take priority when present.
   if (externalUrl) {
     return (
       <a href={externalUrl} target="_blank" rel="noreferrer" className={btnClass}>
@@ -38,6 +35,10 @@ export default function EventDetailActions({
         <CtaArrow />
       </a>
     );
+  }
+
+  if (!onSiteOpen) {
+    return <p className={styles.closed}>{closedLabel}</p>;
   }
 
   return (
